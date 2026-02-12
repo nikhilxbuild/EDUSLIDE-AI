@@ -410,7 +410,6 @@ export default function Home() {
         <div className="container mx-auto max-w-7xl px-4 text-center text-sm text-muted-foreground">
           <p>
             &copy; {new Date().getFullYear()} EduSlide. All rights reserved.
-            Files are processed temporarily and deleted after your session.
           </p>
         </div>
       </footer>

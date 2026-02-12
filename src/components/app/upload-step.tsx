@@ -112,6 +112,9 @@ export function UploadStep({ onUpload }: UploadStepProps) {
             <FileIcon />
             Select PDF
           </Button>
+          <p className="mt-4 text-xs text-muted-foreground">
+            Files are processed temporarily and deleted after your session.
+          </p>
         </CardContent>
       </Card>
     </div>
