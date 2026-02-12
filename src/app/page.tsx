@@ -200,23 +200,6 @@ const TestimonialsSection = () => {
   );
 };
 
-const LandingCTA = ({ onStart }: { onStart: () => void }) => (
-  <section className="w-full py-20 md:py-32">
-    <div className="container mx-auto px-4 md:px-6 text-center">
-      <div className="max-w-2xl mx-auto">
-        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-          Start Optimizing Your Notes Today
-        </h2>
-        <div className="mt-8">
-          <Button size="lg" onClick={onStart}>
-            Upload PDF Now
-          </Button>
-        </div>
-      </div>
-    </div>
-  </section>
-);
-
 export default function Home() {
   const [step, setStep] = useState<
     | 'landing'
@@ -356,7 +339,6 @@ export default function Home() {
           <TrustSection />
           <WhyEduSlideSection />
           <TestimonialsSection />
-          <LandingCTA onStart={handleStartUpload} />
         </main>
       ) : (
         <main className="container mx-auto flex w-full max-w-7xl flex-1 flex-col items-center px-4 py-8 md:py-12">
