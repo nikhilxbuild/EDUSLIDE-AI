@@ -1,3 +1,106 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "page-1",
+      "description": "PDF page thumbnail",
+      "imageUrl": "https://images.unsplash.com/photo-1717944517424-b257e25137a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkb2N1bWVudCUyMHBhZ2V8ZW58MHx8fHwxNzcwOTE2NjYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "document page"
+    },
+    {
+      "id": "page-2",
+      "description": "PDF page thumbnail",
+      "imageUrl": "https://images.unsplash.com/photo-1764509195129-1ea255a907b5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx0ZXh0JTIwbWFudXNjcmlwdHxlbnwwfHx8fDE3NzA5MjA3OTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "text manuscript"
+    },
+    {
+      "id": "page-3",
+      "description": "PDF page thumbnail",
+      "imageUrl": "https://images.unsplash.com/photo-1620754733890-75a20f393d01?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxzaGVldCUyMG11c2ljfGVufDB8fHx8MTc3MDgyMzgxMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sheet music"
+    },
+    {
+      "id": "page-4",
+      "description": "PDF page thumbnail",
+      "imageUrl": "https://images.unsplash.com/photo-1698067942087-53f552fe2f59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxncmFwaCUyMHBhcGVyfGVufDB8fHx8MTc3MDkyMDc4OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "graph paper"
+    },
+    {
+      "id": "page-5",
+      "description": "PDF page thumbnail",
+      "imageUrl": "https://images.unsplash.com/photo-1625225231874-dc5df462f1ee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxkb2N1bWVudCUyMGZvcm18ZW58MHx8fHwxNzcwOTIwNzkwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "document form"
+    },
+    {
+      "id": "page-6",
+      "description": "PDF page thumbnail",
+      "imageUrl": "https://images.unsplash.com/photo-1603796846097-bee99e4a601f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsZWdhbCUyMGRvY3VtZW50fGVufDB8fHx8MTc3MDkxMTkxMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "legal document"
+    },
+    {
+      "id": "page-7",
+      "description": "PDF page thumbnail",
+      "imageUrl": "https://images.unsplash.com/photo-1558636404-9742ab53a5f7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxib29rJTIwcGFnZXxlbnwwfHx8fDE3NzA4OTc0MTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "book page"
+    },
+    {
+      "id": "page-8",
+      "description": "PDF page thumbnail",
+      "imageUrl": "https://images.unsplash.com/photo-1724638197367-1bab34842f90?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx0ZWNobmljYWwlMjBkcmF3aW5nfGVufDB8fHx8MTc3MDc5NjExMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "technical drawing"
+    },
+    {
+      "id": "page-9",
+      "description": "PDF page thumbnail",
+      "imageUrl": "https://images.unsplash.com/photo-1615427579594-705ad2ca6dd3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxsaW5lZCUyMHBhcGVyfGVufDB8fHx8MTc3MDkyMDc4OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "lined paper"
+    },
+    {
+      "id": "page-10",
+      "description": "PDF page thumbnail",
+      "imageUrl": "https://images.unsplash.com/photo-1621672134447-5c576fdef903?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YXJ0aWNsZSUyMHBhZ2V8ZW58MHx8fHwxNzcwOTIwNzkwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "article page"
+    },
+    {
+      "id": "page-11",
+      "description": "PDF page thumbnail",
+      "imageUrl": "https://images.unsplash.com/photo-1568716353609-12ddc5c67f04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjb2RlJTIwcHJpbnRvdXR8ZW58MHx8fHwxNzcwOTIwNzkwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "code printout"
+    },
+    {
+      "id": "page-12",
+      "description": "PDF page thumbnail",
+      "imageUrl": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxyZXNlYXJjaCUyMHBhcGVyfGVufDB8fHx8MTc3MDkyMDc4OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "research paper"
+    },
+    {
+      "id": "page-13",
+      "description": "PDF page thumbnail",
+      "imageUrl": "https://images.unsplash.com/photo-1717944517387-988d7377232f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxkb2N1bWVudCUyMHBhZ2V8ZW58MHx8fHwxNzcwOTE2NjYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "document page"
+    },
+    {
+      "id": "page-14",
+      "description": "PDF page thumbnail",
+      "imageUrl": "https://images.unsplash.com/photo-1766415007388-ce128e47fbe9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0ZXh0JTIwbWFudXNjcmlwdHxlbnwwfHx8fDE3NzA5MjA3OTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "text manuscript"
+    },
+    {
+      "id": "page-15",
+      "description": "PDF page thumbnail",
+      "imageUrl": "https://images.unsplash.com/photo-1717699841805-e80424b1be43?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzaGVldCUyMG11c2ljfGVufDB8fHx8MTc3MDgyMzgxMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sheet music"
+    },
+    {
+      "id": "page-16",
+      "description": "PDF page thumbnail",
+      "imageUrl": "https://images.unsplash.com/photo-1586076100131-32505c71d0d2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxncmFwaCUyMHBhcGVyfGVufDB8fHx8MTc3MDkyMDc4OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "graph paper"
+    },
+    {
+      "id": "pdf-preview",
+      "description": "Final PDF preview",
+      "imageUrl": "https://images.unsplash.com/photo-1743385779313-ac03bb0f997b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkb2N1bWVudCUyMGxheW91dHxlbnwwfHx8fDE3NzA5MjA3OTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "document layout"
+    }
+  ]
 }
