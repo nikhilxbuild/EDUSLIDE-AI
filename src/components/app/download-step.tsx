@@ -1,10 +1,7 @@
 'use client';
 
-import Image from 'next/image';
 import { Download, RotateCcw } from 'lucide-react';
 
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
 interface DownloadStepProps {
@@ -13,8 +10,6 @@ interface DownloadStepProps {
 }
 
 export function DownloadStep({ generatedPdf, onStartOver }: DownloadStepProps) {
-  const previewImage = PlaceHolderImages.find((p) => p.id === 'pdf-preview');
-
   const handleDownloadAgain = () => {
     if (!generatedPdf) return;
 
@@ -39,22 +34,7 @@ export function DownloadStep({ generatedPdf, onStartOver }: DownloadStepProps) {
         </p>
       </div>
 
-      <Card className="w-full max-w-2xl overflow-hidden">
-        <CardContent className="p-4">
-          {previewImage && (
-            <Image
-              src={previewImage.imageUrl}
-              alt={previewImage.description}
-              width={600}
-              height={840}
-              className="mx-auto rounded-md"
-              data-ai-hint={previewImage.imageHint}
-            />
-          )}
-        </CardContent>
-      </Card>
-
-      <div className="flex flex-col gap-4 sm:flex-row">
+      <div className="flex flex-col gap-4 pt-4 sm:flex-row">
         <Button
           size="lg"
           onClick={handleDownloadAgain}
