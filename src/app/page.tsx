@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useMemo, useEffect } from 'react';
 import {
   Layers,
@@ -244,6 +245,11 @@ export default function Home() {
     setStep('upload');
   };
 
+  const handleLogoClick = () => {
+    setPages([]);
+    setStep('landing');
+  };
+
   const handleUpload = async (file: File) => {
     setStep('processing');
     setProcessingProgress(0);
@@ -332,11 +338,15 @@ export default function Home() {
   return (
     <div className="flex min-h-screen w-full flex-col items-center bg-background text-foreground">
       <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur-sm">
-        <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
-          <div className="flex items-center gap-2">
+        <div className="container mx-auto flex h-16 max-w-7xl items-center justify-center px-4 md:justify-between">
+          <Link
+            href="/"
+            onClick={handleLogoClick}
+            className="flex items-center gap-2"
+          >
             <Layers className="h-7 w-7 text-primary" />
             <h1 className="text-2xl font-bold tracking-tight">EduSlide</h1>
-          </div>
+          </Link>
         </div>
       </header>
 
