@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import {
   Layers,
   FileCheck,
@@ -17,6 +17,7 @@ import {
 import * as pdfjsLib from 'pdfjs-dist';
 
 import type { Page, CustomizationOptions } from '@/lib/types';
+import { generatePdf } from '@/lib/pdf-generator';
 
 import { UploadStep } from '@/components/app/upload-step';
 import { ReorderStep } from '@/components/app/reorder-step';
@@ -222,6 +223,7 @@ export default function Home() {
   });
   const [processingProgress, setProcessingProgress] = useState(0);
   const [generationProgress, setGenerationProgress] = useState(0);
+  const [generatedPdf, setGeneratedPdf] = useState<Uint8Array | null>(null);
   const { toast } = useToast();
 
   const handleStartUpload = () => {
@@ -230,6 +232,7 @@ export default function Home() {
 
   const handleLogoClick = () => {
     setPages([]);
+    setGeneratedPdf(null);
     setStep('landing');
   };
 
@@ -246,7 +249,7 @@ export default function Home() {
 
           for (let i = 1; i <= pdf.numPages; i++) {
             const page = await pdf.getPage(i);
-            const viewport = page.getViewport({ scale: 1 });
+            const viewport = page.getViewport({ scale: 1.5 });
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
             canvas.height = viewport.height;
@@ -281,32 +284,40 @@ export default function Home() {
     }
   };
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     setStep('generating');
     setGenerationProgress(0);
-  };
 
-  useEffect(() => {
-    if (step === 'generating') {
-      const timer = setInterval(() => {
-        setGenerationProgress((prev) => (prev >= 95 ? 95 : prev + 5));
-      }, 200);
+    try {
+      const pdfBytes = await generatePdf(pages, customization, setGenerationProgress);
+      setGeneratedPdf(pdfBytes);
 
-      const finishTimer = setTimeout(() => {
-        clearInterval(timer);
-        setGenerationProgress(100);
-        setStep('download');
-      }, 3000);
-
-      return () => {
-        clearInterval(timer);
-        clearTimeout(finishTimer);
-      };
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'eduslide-output.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      setGenerationProgress(100);
+      setStep('download');
+    } catch (error: any) {
+      console.error('Error generating PDF:', error);
+      toast({
+        title: 'Error Generating PDF',
+        description: error.message || 'There was an issue creating your PDF. Please try again.',
+        variant: 'destructive',
+      });
+      setStep('customize');
     }
-  }, [step]);
+  };
 
   const handleStartOver = () => {
     setPages([]);
+    setGeneratedPdf(null);
     setStep('upload');
   };
 
@@ -382,7 +393,7 @@ export default function Home() {
               />
             )}
             {step === 'download' && (
-              <DownloadStep onStartOver={handleStartOver} />
+              <DownloadStep generatedPdf={generatedPdf} onStartOver={handleStartOver} />
             )}
           </div>
         </main>
