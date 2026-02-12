@@ -155,11 +155,28 @@ export async function generatePdf(
             break;
           case 'invert':
             for (let k = 0; k < data.length; k += 4) {
-              const avg = (data[k] + data[k + 1] + data[k + 2]) / 3;
-              const color = avg > 200 ? 0 : 255; // High-contrast inversion
-              data[k] = color;
-              data[k + 1] = color;
-              data[k + 2] = color;
+              const r = data[k];
+              const g = data[k + 1];
+              const b = data[k + 2];
+
+              // If original is very light (e.g., text), make it black
+              if (r > 240 && g > 240 && b > 240) {
+                data[k] = 0;
+                data[k + 1] = 0;
+                data[k + 2] = 0;
+              }
+              // If original is very dark (e.g., background), make it white
+              else if (r < 30 && g < 30 && b < 30) {
+                data[k] = 255;
+                data[k + 1] = 255;
+                data[k + 2] = 255;
+              }
+              // Otherwise, just invert the color
+              else {
+                data[k] = 255 - r;
+                data[k + 1] = 255 - g;
+                data[k + 2] = 255 - b;
+              }
             }
             break;
         }
