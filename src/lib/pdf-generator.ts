@@ -96,29 +96,25 @@ export async function generatePdf(
       const localIndex = j - startIndex;
       const page = pagesToProcess[j];
 
-      // a. Load sourceUrl into an Image object
       const image = new Image();
       image.src = page.sourceUrl;
       await new Promise((resolve, reject) => {
         image.onload = resolve;
-        image.onerror = reject;
+        image.onerror = (err) => reject(new Error(`Failed to load page ${j+1}: ${err}`));
       });
-
-      // b. Determine source crop box
+      
       const cropAmount = cropBorders ? 0.03 : 0;
       const sourceX = image.width * cropAmount;
       const sourceY = image.height * cropAmount;
       const sourceWidth = image.width * (1 - cropAmount * 2);
       const sourceHeight = image.height * (1 - cropAmount * 2);
 
-      // c. Create canvas
       const canvas = document.createElement('canvas');
       canvas.width = sourceWidth;
       canvas.height = sourceHeight;
       const ctx = canvas.getContext('2d', { willReadFrequently: true });
       if (!ctx) throw new Error('Could not get canvas context');
 
-      // d. Draw cropped image
       ctx.drawImage(
         image,
         sourceX,
@@ -131,7 +127,6 @@ export async function generatePdf(
         canvas.height
       );
 
-      // e. Apply color filters
       if (colorMode !== 'normal') {
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const data = imageData.data;
@@ -147,7 +142,7 @@ export async function generatePdf(
           case 'bw':
             for (let k = 0; k < data.length; k += 4) {
               const avg = (data[k] + data[k + 1] + data[k + 2]) / 3;
-              const color = avg > 200 ? 255 : 0; // Higher threshold for cleaner whites
+              const color = avg > 128 ? 255 : 0;
               data[k] = color;
               data[k + 1] = color;
               data[k + 2] = color;
@@ -155,43 +150,21 @@ export async function generatePdf(
             break;
           case 'invert':
             for (let k = 0; k < data.length; k += 4) {
-              const r = data[k];
-              const g = data[k + 1];
-              const b = data[k + 2];
-
-              // If original is very light (e.g., text), make it black
-              if (r > 240 && g > 240 && b > 240) {
-                data[k] = 0;
-                data[k + 1] = 0;
-                data[k + 2] = 0;
-              }
-              // If original is very dark (e.g., background), make it white
-              else if (r < 30 && g < 30 && b < 30) {
-                data[k] = 255;
-                data[k + 1] = 255;
-                data[k + 2] = 255;
-              }
-              // Otherwise, just invert the color
-              else {
-                data[k] = 255 - r;
-                data[k + 1] = 255 - g;
-                data[k + 2] = 255 - b;
-              }
+              data[k] = 255 - data[k];
+              data[k + 1] = 255 - data[k + 1];
+              data[k + 2] = 255 - data[k + 2];
             }
             break;
         }
         ctx.putImageData(imageData, 0, 0);
       }
 
-      // f-g. Get image bytes
       const processedImageBytes = await fetch(
         canvas.toDataURL('image/png')
       ).then((res) => res.arrayBuffer());
 
-      // h. Embed into PDF
       const pdfImage = await newPdfDoc.embedPng(processedImageBytes);
 
-      // i. Calculate position and draw
       const { width: imgWidth, height: imgHeight } = pdfImage.scale(1);
       const scale = Math.min(cellWidth / imgWidth, cellHeight / imgHeight);
       const scaledWidth = imgWidth * scale;
@@ -214,7 +187,6 @@ export async function generatePdf(
         height: scaledHeight,
       });
 
-      // j. Update progress
       const progress =
         20 +
         Math.round(((i * pagesPerSheet + (localIndex + 1)) / totalPages) * 80);
