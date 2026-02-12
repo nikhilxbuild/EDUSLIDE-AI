@@ -46,17 +46,15 @@ const LandingHero = ({ onStart }: { onStart: () => void }) => (
     <div className="container mx-auto px-4 md:px-6 text-center">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-          Convert Notes &amp; Questions into Ready Files in Minutes
+          Convert Your PDFs into Print-Ready Notes in Minutes
         </h1>
         <p className="mt-6 text-lg text-muted-foreground md:text-xl">
-          Transform your PDFs into clean, printable notes in seconds.
+          Optimize your study material with N-Up layouts, color modes, and
+          clean formatting.
         </p>
-        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="mt-8 flex justify-center">
           <Button size="lg" onClick={onStart}>
-            EduSlide Notes
-          </Button>
-          <Button size="lg" variant="secondary" onClick={onStart}>
-            EduSlide PPT
+            Upload PDF
           </Button>
         </div>
       </div>
@@ -66,7 +64,7 @@ const LandingHero = ({ onStart }: { onStart: () => void }) => (
 
 const TrustSection = () => {
   const trustFeatures = [
-    { icon: FileCheck, text: '100k+', subtext: 'Files Processed' },
+    { icon: FileCheck, text: '100k+', subtext: 'PDFs Optimized' },
     { icon: Percent, text: 'Completely Free', subtext: 'No hidden costs' },
     { icon: Users, text: 'Trusted by Students', subtext: 'Across the globe' },
     { icon: ShieldCheck, text: 'Secure & Private', subtext: 'Files are deleted' },
@@ -99,19 +97,19 @@ const WhyEduSlideSection = () => {
   const whyFeatures = [
     {
       icon: Clock,
-      title: 'Save Time',
+      title: 'Save Time on Notes',
       description:
         'Stop wasting hours reformatting notes. Get it done in seconds.',
     },
     {
       icon: Coins,
-      title: 'Save Money',
+      title: 'Reduce Printing Cost',
       description:
         'Optimize page layouts to use less paper and ink when printing.',
     },
     {
       icon: MousePointerClick,
-      title: 'Easy to Use',
+      title: 'Easy PDF Formatting',
       description: 'A simple, intuitive interface that anyone can master instantly.',
     },
     {
