@@ -32,7 +32,7 @@ export default function RootLayout({
       <body className="font-body antialiased animated-gradient-background text-foreground">
         <Header />
         <div className="flex min-h-screen flex-col">
-            <main className="flex-grow relative z-10 pt-20">{children}</main>
+            <main className="flex-grow relative z-10">{children}</main>
             <Footer />
         </div>
         {/* This spacer creates room for the fixed mobile nav, making the footer clickable */}

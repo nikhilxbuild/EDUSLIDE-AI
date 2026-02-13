@@ -42,7 +42,7 @@ const STEPS = [
 // --- Landing Page Components ---
 
 const LandingHero = ({ onStart }: { onStart: () => void }) => (
-  <section className="w-full py-20 md:py-32 lg:py-40 text-center">
+  <section className="w-full pt-12 md:pt-16 pb-20 md:pb-24 text-center">
     <div className="container mx-auto px-4 md:px-6">
       <div className="max-w-4xl mx-auto">
         <div className="mb-4 inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">

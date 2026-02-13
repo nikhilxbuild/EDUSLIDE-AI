@@ -18,19 +18,19 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="fixed top-0 z-50 w-full border-b border-border/20 bg-background/80 backdrop-blur-lg">
-      <div className="container mx-auto flex h-20 max-w-7xl items-center justify-between px-4">
+    <header className="relative z-10 w-full py-6">
+      <div className="container mx-auto flex max-w-7xl items-center justify-center px-4">
         <Link href="/">
           <Image
             src="https://drive.google.com/uc?export=view&id=1dAaKjH8Gtc7DVXRj_foxzdc5gOnjp6cU"
             alt="EduSlide Logo"
-            width={225}
-            height={48}
-            className="h-10 w-auto md:h-12"
+            width={300}
+            height={64}
+            className="h-12 w-auto md:h-16"
             priority
           />
         </Link>
-        <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
+        <nav className="absolute right-4 top-1/2 hidden -translate-y-1/2 items-center space-x-6 text-sm font-medium md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
