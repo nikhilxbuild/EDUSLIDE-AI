@@ -279,10 +279,12 @@ export default function Home() {
   return (
     <div className="flex min-h-screen w-full flex-col items-center">
       {step === 'landing' ? (
-        <div className="w-full">
-          <LandingHero onStart={handleStartUpload} />
-          <StatsSection />
-          <FeaturesSection />
+        <div className="w-full animated-gradient-background">
+          <div className="relative z-10">
+            <LandingHero onStart={handleStartUpload} />
+            <StatsSection />
+            <FeaturesSection />
+          </div>
         </div>
       ) : (
         <div className="container mx-auto flex w-full max-w-7xl flex-1 flex-col items-center px-4 py-8 md:py-12">
