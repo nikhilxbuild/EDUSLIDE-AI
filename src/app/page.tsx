@@ -58,9 +58,6 @@ const LandingHero = ({ onStart }: { onStart: () => void }) => (
           <Button size="lg" onClick={onStart}>
             Get Started <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
-          <Button size="lg" variant="outline" onClick={onStart}>
-            <PlayCircle className="mr-2 h-5 w-5" /> Try Free
-          </Button>
         </div>
       </div>
     </div>
@@ -150,26 +147,6 @@ const FeaturesSection = () => {
     </section>
   );
 };
-
-const LandingCTA = ({ onStart }: { onStart: () => void }) => (
-  <section className="w-full py-20">
-    <div className="container mx-auto max-w-3xl px-4 md:px-6 text-center">
-      <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
-        Start Using EduSlide for Free
-      </h2>
-      <p className="mt-4 text-muted-foreground">
-        No sign-up required. Just upload your file and start creating.
-      </p>
-      <div className="mt-6">
-        <Button size="lg" onClick={onStart}>
-          Upload PDF and Start Now
-          <ArrowRight className="ml-2" />
-        </Button>
-      </div>
-    </div>
-  </section>
-);
-
 
 export default function Home() {
   const [step, setStep] = useState<
@@ -306,7 +283,6 @@ export default function Home() {
           <LandingHero onStart={handleStartUpload} />
           <StatsSection />
           <FeaturesSection />
-          <LandingCTA onStart={handleStartUpload} />
         </div>
       ) : (
         <div className="container mx-auto flex w-full max-w-7xl flex-1 flex-col items-center px-4 py-8 md:py-12">

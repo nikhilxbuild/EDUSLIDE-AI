@@ -16,24 +16,19 @@ const footerLinks = [
     { href: '/community', label: 'Community' },
     { href: '/support', label: 'Support' },
     { href: '/help', label: 'Help' },
-    { href: '#', label: 'Privacy Policy' }, // Placeholder
-    { href: '#', label: 'Terms of Service' }, // Placeholder
+    { href: '#', label: 'Privacy Policy' },
+    { href: '#', label: 'Terms of Service' },
 ];
 
 export function Footer() {
   return (
     <footer className="w-full border-t border-white/10 bg-background">
       <div className="container mx-auto max-w-7xl px-4 py-8 md:py-12">
-        <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
-            <div className="flex flex-col items-center md:items-start">
-                 <a href="/" className="mb-4 flex items-center gap-2">
-                    <Layers className="h-7 w-7 text-primary" />
-                    <h1 className="text-2xl font-bold tracking-tight">EduSlide</h1>
-                </a>
-                <p className="text-center text-sm text-muted-foreground md:text-left">
-                    © {new Date().getFullYear()} EduSlide. Made with ❤️ for Students.
-                </p>
-            </div>
+        <div className="flex flex-col items-center gap-6 text-center">
+            <a href="/" className="mb-2 flex items-center gap-2">
+                <Layers className="h-7 w-7 text-primary" />
+                <h1 className="text-2xl font-bold tracking-tight">EduSlide</h1>
+            </a>
           
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
                 {footerLinks.map((link) => (
@@ -51,6 +46,10 @@ export function Footer() {
                     </Link>
                 ))}
             </div>
+
+            <p className="text-sm text-muted-foreground">
+                © {new Date().getFullYear()} EduSlide. All rights reserved.
+            </p>
         </div>
       </div>
     </footer>

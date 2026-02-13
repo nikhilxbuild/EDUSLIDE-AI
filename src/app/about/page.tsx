@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, Rocket, Eye, Gem, Zap, Shield, BookOpen, Heart } from 'lucide-react';
+import { Users, Rocket, Eye, Gem, Zap, Shield, BookOpen, Heart, Layers } from 'lucide-react';
 
 const values = [
     { icon: Users, title: "Student First", description: "Every feature is designed for learners." },
@@ -97,6 +97,10 @@ export default function AboutPage() {
         </Card>
 
       </div>
+       <div className="flex flex-col items-center gap-2 pt-20 text-center">
+            <Layers className="h-10 w-10 text-primary" />
+            <h2 className="text-3xl font-bold tracking-tight">EduSlide</h2>
+        </div>
     </div>
   );
 }
