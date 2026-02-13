@@ -30,8 +30,8 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased animated-gradient-background text-foreground">
-        <Header />
         <div className="flex min-h-screen flex-col">
+            <Header />
             <main className="flex-grow relative z-10">{children}</main>
             <Footer />
         </div>

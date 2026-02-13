@@ -287,7 +287,7 @@ export default function Home() {
   }, [step]);
 
   return (
-    <div className="flex min-h-screen w-full flex-col">
+    <>
       {step === 'landing' ? (
         <>
           <LandingHero onStart={handleStartUpload} />
@@ -343,6 +343,6 @@ export default function Home() {
             </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
