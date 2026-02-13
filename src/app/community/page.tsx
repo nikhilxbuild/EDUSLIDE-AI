@@ -41,7 +41,7 @@ export default function CommunityPage() {
 
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {socialPlatforms.map((platform) => (
-                  <Link key={platform.name} href={platform.href} target="_blank" rel="noopener noreferrer" className="block">
+                  <a key={platform.name} href={platform.href} target="_blank" rel="noopener noreferrer" className="block">
                   <Card className="glassmorphic h-full transform transition-all duration-300 hover:-translate-y-2 glow-on-hover">
                       <CardHeader className="flex-row items-center gap-4">
                       <platform.icon className="h-8 w-8 text-primary" />
@@ -51,7 +51,7 @@ export default function CommunityPage() {
                       <p className="text-muted-foreground">{platform.description}</p>
                       </CardContent>
                   </Card>
-                  </Link>
+                  </a>
               ))}
               </div>
 

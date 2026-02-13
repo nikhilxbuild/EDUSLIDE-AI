@@ -23,8 +23,8 @@ const footerLinks = [
     { href: '/community', label: 'Community' },
     { href: '/support', label: 'Support' },
     { href: '/help', label: 'Help' },
-    { href: '/privacy', label: 'Privacy Policy' },
-    { href: '/terms', label: 'Terms of Service' },
+    { href: '/privacy-policy', label: 'Privacy Policy' },
+    { href: '/terms-of-service', label: 'Terms of Service' },
 ];
 
 export function Footer() {
@@ -42,10 +42,10 @@ export function Footer() {
 
             <div className="flex items-center gap-4">
                 {socialLinks.map((social) => (
-                    <Link key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="text-muted-foreground transition-colors hover:text-primary">
+                    <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="text-muted-foreground transition-colors hover:text-primary">
                         <social.icon className="h-5 w-5" />
                         <span className="sr-only">{social.label}</span>
-                    </Link>
+                    </a>
                 ))}
             </div>
 
