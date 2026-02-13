@@ -20,7 +20,7 @@ export function Header() {
   return (
     <header className="relative z-10 w-full py-2">
       <div className="container mx-auto flex max-w-7xl items-center justify-center px-4">
-        <Link href="/">
+        <a href="/">
           <Image
             src="https://drive.google.com/uc?export=view&id=1dAaKjH8Gtc7DVXRj_foxzdc5gOnjp6cU"
             alt="EduSlide Logo"
@@ -29,7 +29,7 @@ export function Header() {
             className="h-16 w-auto cursor-pointer md:h-[5.5rem]"
             priority
           />
-        </Link>
+        </a>
         <nav className="absolute right-4 top-1/2 hidden -translate-y-1/2 items-center space-x-6 text-sm font-medium md:flex">
           {navLinks.map((link) => (
             <Link
