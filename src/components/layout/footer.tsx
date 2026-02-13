@@ -23,8 +23,8 @@ const footerLinks = [
     { href: '/community', label: 'Community' },
     { href: '/support', label: 'Support' },
     { href: '/help', label: 'Help' },
-    { href: '#', label: 'Privacy Policy' },
-    { href: '#', label: 'Terms of Service' },
+    { href: '/privacy', label: 'Privacy Policy' },
+    { href: '/terms', label: 'Terms of Service' },
 ];
 
 export function Footer() {
