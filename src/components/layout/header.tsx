@@ -17,13 +17,15 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 hidden w-full border-b border-white/10 bg-background/80 backdrop-blur-lg md:block">
-      <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
-        <a href="/" className="flex items-center gap-2">
-          <Layers className="h-7 w-7 text-primary" />
-          <h1 className="text-2xl font-bold tracking-tight">EduSlide</h1>
-        </a>
-        <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/80 backdrop-blur-lg">
+      <div className="container mx-auto flex h-16 max-w-7xl items-center justify-center px-4 relative">
+        <div className="flex items-center gap-2">
+          <a href="/" className="flex items-center gap-2">
+            <Layers className="h-7 w-7 text-primary" />
+            <h1 className="text-2xl font-bold tracking-tight">EduSlide</h1>
+          </a>
+        </div>
+        <nav className="hidden absolute right-4 items-center space-x-6 text-sm font-medium md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}

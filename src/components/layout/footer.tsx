@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Layers, Twitter, Instagram, Youtube, Send, Link2 } from 'lucide-react';
+import { Twitter, Instagram, Youtube, Send, Link2 } from 'lucide-react';
 
 const socialLinks = [
   { href: 'https://x.com/EduSlideAi', icon: Twitter, label: 'Twitter' },
@@ -25,11 +25,6 @@ export function Footer() {
     <footer className="w-full border-t border-white/10 bg-background">
       <div className="container mx-auto max-w-7xl px-4 py-8 md:py-12">
         <div className="flex flex-col items-center gap-6 text-center">
-            <a href="/" className="mb-2 flex items-center gap-2">
-                <Layers className="h-7 w-7 text-primary" />
-                <h1 className="text-2xl font-bold tracking-tight">EduSlide</h1>
-            </a>
-          
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
                 {footerLinks.map((link) => (
                     <Link key={link.label} href={link.href} className="text-muted-foreground transition-colors hover:text-primary">
@@ -48,7 +43,7 @@ export function Footer() {
             </div>
 
             <p className="text-sm text-muted-foreground">
-                © {new Date().getFullYear()} EduSlide. All rights reserved.
+                © 2026 EduSlide. Made with ❤️ for Students.
             </p>
         </div>
       </div>
