@@ -30,7 +30,7 @@ export default function SupportPage() {
               <CardContent className="flex flex-col items-center gap-4">
                   <div className="p-2 bg-white rounded-lg">
                       <Image 
-                          src="https://placehold.co/250x250/0B0F1A/FFF?text=UPI\nQR" 
+                          src="https://drive.google.com/uc?export=view&id=1UsgVqL5RqoKrI1DS6Sokqn6Aof1s9PoI" 
                           alt="UPI QR Code"
                           width={250}
                           height={250}
