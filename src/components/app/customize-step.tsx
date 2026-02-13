@@ -169,35 +169,49 @@ export function CustomizeStep({
               <div className="space-y-4">
                 <h3 className="font-semibold flex items-center">
                   <Palette className="mr-2" />
-                  Color Mode
+                  Color Filters
                 </h3>
-                <RadioGroup
-                  value={customization.colorMode}
-                  onValueChange={(val) =>
-                    setCustomization({
-                      ...customization,
-                      colorMode: val as any,
-                    })
-                  }
-                  className="grid grid-cols-2 gap-2"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="normal" id="color-normal" />
-                    <Label htmlFor="color-normal">Normal</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="grayscale" id="color-grayscale" />
-                    <Label htmlFor="color-grayscale">Grayscale</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="bw" id="color-bw" />
-                    <Label htmlFor="color-bw">B&W</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="invert" id="color-invert" />
-                    <Label htmlFor="color-invert">Invert</Label>
-                  </div>
-                </RadioGroup>
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="flex items-center space-x-2">
+                        <Switch
+                            id="color-invert"
+                            checked={customization.colorMode.invert}
+                            onCheckedChange={(checked) =>
+                                setCustomization((prev) => ({
+                                    ...prev,
+                                    colorMode: { ...prev.colorMode, invert: checked },
+                                }))
+                            }
+                        />
+                        <Label htmlFor="color-invert">Invert</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <Switch
+                            id="color-grayscale"
+                            checked={customization.colorMode.grayscale}
+                            onCheckedChange={(checked) =>
+                                setCustomization((prev) => ({
+                                    ...prev,
+                                    colorMode: { ...prev.colorMode, grayscale: checked },
+                                }))
+                            }
+                        />
+                        <Label htmlFor="color-grayscale">Grayscale</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <Switch
+                            id="color-bw"
+                            checked={customization.colorMode.bw}
+                            onCheckedChange={(checked) =>
+                                setCustomization((prev) => ({
+                                    ...prev,
+                                    colorMode: { ...prev.colorMode, bw: checked },
+                                }))
+                            }
+                        />
+                        <Label htmlFor="color-bw">B&W</Label>
+                    </div>
+                </div>
               </div>
             </div>
             <Separator />

@@ -148,65 +148,56 @@ export async function generatePdf(
         canvas.height
       );
 
-      if (colorMode !== 'normal') {
+      const anyFilterEnabled = colorMode.invert || colorMode.grayscale || colorMode.bw;
+
+      if (anyFilterEnabled) {
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const data = imageData.data;
-        switch (colorMode) {
-          case 'grayscale':
-            for (let k = 0; k < data.length; k += 4) {
-              const avg = (data[k] + data[k + 1] + data[k + 2]) / 3;
-              data[k] = avg;
-              data[k + 1] = avg;
-              data[k + 2] = avg;
-            }
-            break;
-          case 'bw':
-            for (let k = 0; k < data.length; k += 4) {
-              const avg = (data[k] + data[k + 1] + data[k + 2]) / 3;
-              const color = avg > 128 ? 255 : 0;
-              data[k] = color;
-              data[k + 1] = color;
-              data[k + 2] = color;
-            }
-            break;
-          case 'invert':
-            for (let k = 0; k < data.length; k += 4) {
-                let r = data[k];
-                let g = data[k + 1];
-                let b = data[k + 2];
+        for (let k = 0; k < data.length; k += 4) {
+          let r = data[k];
+          let g = data[k + 1];
+          let b = data[k + 2];
 
-                // Step 3 (from prompt): Increase brightness by ~25%
-                r = Math.min(255, r * 1.25);
-                g = Math.min(255, g * 1.25);
-                b = Math.min(255, b * 1.25);
+          // 1. Apply Soft Invert if enabled
+          if (colorMode.invert) {
+            // Soft Invert
+            r = 255 - r * 0.75;
+            g = 255 - g * 0.75;
+            b = 255 - b * 0.75;
 
-                // Step 4 (from prompt): Desaturate by 40%
-                const desaturationAmount = 0.40;
-                const gray = r * 0.299 + g * 0.587 + b * 0.114;
-                r = r * (1 - desaturationAmount) + gray * desaturationAmount;
-                g = g * (1 - desaturationAmount) + gray * desaturationAmount;
-                b = b * (1 - desaturationAmount) + gray * desaturationAmount;
+            // Desaturate 25%
+            const gray = r * 0.299 + g * 0.587 + b * 0.114;
+            const desaturation = 0.25;
+            r = r * (1 - desaturation) + gray * desaturation;
+            g = g * (1 - desaturation) + gray * desaturation;
+            b = b * (1 - desaturation) + gray * desaturation;
+            
+            // Brightness +10%
+            r = Math.min(255, r * 1.1);
+            g = Math.min(255, g * 1.1);
+            b = Math.min(255, b * 1.1);
+          }
 
-                // Step 5 (from prompt): Soft invert only dark areas
-                const lum = 0.299 * r + 0.587 * g + 0.114 * b;
-                if (lum < 80) {
-                    r = 255 - r * 0.7;
-                    g = 255 - g * 0.7;
-                    b = 255 - b * 0.7;
-                }
-                
-                // Step 6 (from prompt): Background whitening
-                if (r > 220 && g > 220 && b > 220) {
-                    r = 245;
-                    g = 245;
-                    b = 245;
-                }
-                
-                data[k] = r;
-                data[k + 1] = g;
-                data[k + 2] = b;
-            }
-            break;
+          // 2. Apply Grayscale if enabled
+          if (colorMode.grayscale) {
+            const avg = (r + g + b) / 3;
+            r = avg;
+            g = avg;
+            b = avg;
+          }
+
+          // 3. Apply B&W if enabled
+          if (colorMode.bw) {
+            const avg = (r + g + b) / 3;
+            const color = avg > 128 ? 255 : 0;
+            r = color;
+            g = color;
+            b = color;
+          }
+          
+          data[k] = r;
+          data[k + 1] = g;
+          data[k + 2] = b;
         }
         ctx.putImageData(imageData, 0, 0);
       }

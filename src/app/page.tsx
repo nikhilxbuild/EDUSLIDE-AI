@@ -217,7 +217,11 @@ export default function Home() {
     cols: 2,
     orientation: 'portrait',
     margin: 'default',
-    colorMode: 'normal',
+    colorMode: {
+      invert: false,
+      grayscale: false,
+      bw: false,
+    },
     removeBlankPages: true,
     cropBorders: false,
   });
