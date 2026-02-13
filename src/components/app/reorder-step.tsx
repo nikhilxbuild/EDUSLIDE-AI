@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
 
 interface ReorderStepProps {
   pages: Page[];
@@ -95,41 +96,50 @@ export function ReorderStep({
           {pages.map((page, index) => (
             <div
               key={page.id}
-              className="group relative flex flex-col items-center space-y-2"
+              className="group relative flex cursor-pointer flex-col items-center space-y-2"
+              onClick={() => togglePageSelection(page.id)}
             >
-              <div className="relative w-full">
+              <div
+                className={cn(
+                  'relative w-full transform rounded-md border-2 transition-all duration-200',
+                  page.selected
+                    ? 'scale-[1.02] border-primary shadow-lg shadow-primary/20'
+                    : 'border-transparent group-hover:border-primary/50'
+                )}
+              >
                 <Image
                   src={page.sourceUrl}
                   alt={`Page preview ${index + 1}`}
                   width={200}
                   height={280}
-                  className="rounded-md border-2 border-transparent transition-all group-hover:border-primary"
+                  className="rounded-md"
                   data-ai-hint={page.sourceHint}
                 />
                 <div
-                  className={`absolute inset-0 rounded-md bg-black/50 transition-opacity ${
-                    page.selected ? 'opacity-0' : 'opacity-100'
-                  }`}
+                  className={cn(
+                    'absolute inset-0 rounded-md bg-black/60 transition-opacity',
+                    page.selected
+                      ? 'opacity-0'
+                      : 'opacity-100 group-hover:opacity-50'
+                  )}
                 />
               </div>
 
-              <div className="flex w-full items-center justify-between">
-                <Checkbox
-                  checked={page.selected}
-                  onCheckedChange={() => togglePageSelection(page.id)}
-                  aria-label={`Select page ${index + 1}`}
-                />
+              <div className="flex w-full items-center justify-center">
                 <p className="text-xs font-medium text-muted-foreground">
                   Page {index + 1}
                 </p>
               </div>
 
-              <div className="absolute right-1 top-1 flex flex-col gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+              <div className="absolute right-1 top-1 z-10 flex flex-col gap-1 opacity-0 transition-opacity group-hover:opacity-100">
                 <Button
                   variant="secondary"
                   size="icon"
                   className="h-7 w-7"
-                  onClick={() => movePage(index, 'left')}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    movePage(index, 'left');
+                  }}
                   disabled={index === 0}
                   aria-label="Move page left"
                 >
@@ -139,7 +149,10 @@ export function ReorderStep({
                   variant="secondary"
                   size="icon"
                   className="h-7 w-7"
-                  onClick={() => movePage(index, 'right')}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    movePage(index, 'right');
+                  }}
                   disabled={index === pages.length - 1}
                   aria-label="Move page right"
                 >
@@ -149,7 +162,10 @@ export function ReorderStep({
                   variant="destructive"
                   size="icon"
                   className="h-7 w-7"
-                  onClick={() => removePage(page.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removePage(page.id);
+                  }}
                   aria-label="Remove page"
                 >
                   <Trash2 />
