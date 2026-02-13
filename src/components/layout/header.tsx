@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Layers } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -15,9 +16,36 @@ const navLinks = [
 
 export function Header() {
   const pathname = usePathname();
+  const [isHidden, setIsHidden] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const controlNavbar = () => {
+    if (typeof window !== 'undefined') {
+      if (window.scrollY > lastScrollY && window.scrollY > 80) { // if scroll down
+        setIsHidden(true);
+      } else { // if scroll up
+        setIsHidden(false);
+      }
+      setLastScrollY(window.scrollY);
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', controlNavbar);
+
+      return () => {
+        window.removeEventListener('scroll', controlNavbar);
+      };
+    }
+  }, [lastScrollY]);
+
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-background">
+    <header className={cn(
+        "sticky top-0 z-50 w-full border-b border-white/10 bg-background transition-transform duration-300",
+        isHidden && "-translate-y-full"
+      )}>
       <div className="container mx-auto flex h-16 max-w-7xl items-center justify-center px-4 relative">
         <div className="flex items-center gap-2">
           <a href="/" className="flex items-center gap-2">
