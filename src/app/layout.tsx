@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
+import { Header } from '@/components/layout/header';
+import { Footer } from '@/components/layout/footer';
+import { MobileNav } from '@/components/layout/mobile-nav';
 
 export const metadata: Metadata = {
   title: 'EduSlide',
@@ -26,8 +29,11 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-body antialiased">
-        {children}
+      <body className="font-body antialiased bg-background text-foreground">
+        <Header />
+        <main className="min-h-screen pb-16 md:pb-0">{children}</main>
+        <MobileNav />
+        <Footer />
         <Toaster />
       </body>
     </html>

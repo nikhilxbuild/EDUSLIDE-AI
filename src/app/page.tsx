@@ -3,16 +3,15 @@
 import Link from 'next/link';
 import { useState, useMemo } from 'react';
 import {
-  Layers,
+  ArrowRight,
+  PlayCircle,
   FileCheck,
-  Percent,
-  Users,
-  ShieldCheck,
-  Clock,
-  Coins,
-  MousePointerClick,
-  Smartphone,
-  Star,
+  Zap,
+  Box,
+  Palette,
+  Repeat,
+  Download,
+  CheckCircle,
 } from 'lucide-react';
 import * as pdfjsLib from 'pdfjs-dist';
 
@@ -27,8 +26,7 @@ import { DownloadStep } from '@/components/app/download-step';
 import { StepIndicator } from '@/components/app/step-indicator';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 if (typeof window !== 'undefined') {
   pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
@@ -44,19 +42,24 @@ const STEPS = [
 // --- Landing Page Components ---
 
 const LandingHero = ({ onStart }: { onStart: () => void }) => (
-  <section className="w-full py-20 md:py-32 lg:py-40 bg-background">
-    <div className="container mx-auto px-4 md:px-6 text-center">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-          Convert Your PDFs into Print-Ready Notes in Minutes
+  <section className="w-full py-20 md:py-32 lg:py-40 text-center">
+    <div className="container mx-auto px-4 md:px-6">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-4 inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+          #1 PDF Tool for Students
+        </div>
+        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent">
+          Convert Your Notes into Print-Ready PDFs in Minutes
         </h1>
         <p className="mt-6 text-lg text-muted-foreground md:text-xl">
-          Optimize your study material with N-Up layouts, color modes, and
-          clean formatting.
+          Upload PDFs, customize layout, and get clean printable notes instantly.
         </p>
-        <div className="mt-8 flex justify-center">
+        <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
           <Button size="lg" onClick={onStart}>
-            Upload PDF
+            Get Started <ArrowRight className="ml-2 h-5 w-5" />
+          </Button>
+          <Button size="lg" variant="outline" onClick={onStart}>
+            <PlayCircle className="mr-2 h-5 w-5" /> Try Free
           </Button>
         </div>
       </div>
@@ -64,29 +67,21 @@ const LandingHero = ({ onStart }: { onStart: () => void }) => (
   </section>
 );
 
-const TrustSection = () => {
-  const trustFeatures = [
-    { icon: FileCheck, text: '100k+', subtext: 'PDFs Optimized' },
-    { icon: Percent, text: 'Completely Free', subtext: 'No hidden costs' },
-    { icon: Users, text: 'Trusted by Students', subtext: 'Across the globe' },
-    { icon: ShieldCheck, text: 'Secure & Private', subtext: 'Files are deleted' },
+const StatsSection = () => {
+  const stats = [
+    { value: '100K+', label: 'Files Processed' },
+    { value: 'Completely Free', label: 'No Hidden Costs' },
+    { value: 'Secure & Private', label: 'Your Files Are Safe' },
+    { value: 'Trusted by Students', label: 'Across India' },
   ];
   return (
-    <section className="w-full py-12 md:py-20 bg-secondary/30">
+    <section className="w-full py-12">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {trustFeatures.map((feature, index) => (
-            <div
-              key={index}
-              className="flex items-center gap-4 group transition-transform duration-300 hover:scale-105"
-            >
-              <div className="p-3 rounded-full bg-primary/10 text-primary shadow-lg shadow-primary/10 transition-all group-hover:scale-110 group-hover:shadow-xl group-hover:shadow-primary/20">
-                <feature.icon className="h-7 w-7" />
-              </div>
-              <div>
-                <p className="text-xl font-bold">{feature.text}</p>
-                <p className="text-sm text-muted-foreground">{feature.subtext}</p>
-              </div>
+        <div className="grid gap-8 rounded-lg border border-white/10 bg-card/40 p-8 backdrop-blur-sm sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map((stat, index) => (
+            <div key={index} className="flex flex-col items-center gap-2 text-center">
+              <p className="text-2xl font-bold text-primary">{stat.value}</p>
+              <p className="text-sm font-medium text-muted-foreground">{stat.label}</p>
             </div>
           ))}
         </div>
@@ -95,51 +90,58 @@ const TrustSection = () => {
   );
 };
 
-const WhyEduSlideSection = () => {
-  const whyFeatures = [
+const FeaturesSection = () => {
+  const features = [
     {
-      icon: Clock,
-      title: 'Save Time on Notes',
-      description:
-        'Stop wasting hours reformatting notes. Get it done in seconds.',
+      icon: FileCheck,
+      title: 'PDF to Notes Conversion',
+      description: 'Easily convert any PDF into optimized note pages.',
     },
     {
-      icon: Coins,
-      title: 'Reduce Printing Cost',
-      description:
-        'Optimize page layouts to use less paper and ink when printing.',
+      icon: Box,
+      title: 'Custom N-Up (1×1 to 8×8)',
+      description: 'Combine multiple pages onto a single sheet to save paper.',
     },
     {
-      icon: MousePointerClick,
-      title: 'Easy PDF Formatting',
-      description: 'A simple, intuitive interface that anyone can master instantly.',
+      icon: Palette,
+      title: 'Invert / Grayscale / B&W',
+      description: 'Change color modes for better readability and printing.',
     },
     {
-      icon: Smartphone,
-      title: 'Mobile Friendly',
-      description: 'Works seamlessly on your phone, tablet, or desktop.',
+      icon: Repeat,
+      title: 'Page Reordering',
+      description: 'Arrange pages in any order you need before generating.',
+    },
+    {
+      icon: Zap,
+      title: 'High-Quality Output',
+      description: 'Get sharp, clear, and readable PDFs every time.',
+    },
+    {
+      icon: Download,
+      title: 'Instant Download',
+      description: 'Your optimized PDF is ready to download in seconds.',
     },
   ];
   return (
     <section className="w-full py-20 md:py-24">
       <div className="container mx-auto px-4 md:px-6">
         <h2 className="text-3xl font-bold tracking-tighter text-center sm:text-4xl md:text-5xl">
-          Why EduSlide?
+          Everything You Need for Perfect Notes
         </h2>
-        <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {whyFeatures.map((feature, index) => (
-            <Card
-              key={index}
-              className="bg-card hover:border-primary/50 transition-colors"
-            >
-              <CardContent className="p-6 flex flex-col items-center text-center">
-                <div className="p-4 rounded-full bg-primary/10 text-primary mb-4">
-                  <feature.icon className="h-8 w-8" />
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {features.map((feature, index) => (
+            <Card key={index} className="glassmorphic glow-on-hover transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="p-2 rounded-md bg-primary/10 text-primary">
+                    <feature.icon className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold">{feature.title}</h3>
+                    <p className="mt-1 text-muted-foreground">{feature.description}</p>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold">{feature.title}</h3>
-                <p className="mt-2 text-muted-foreground">
-                  {feature.description}
-                </p>
               </CardContent>
             </Card>
           ))}
@@ -149,57 +151,25 @@ const WhyEduSlideSection = () => {
   );
 };
 
-const TestimonialsSection = () => {
-  const testimonials = [
-    {
-      name: 'Rahul',
-      avatar: 'R',
-      quote:
-        'EduSlide helped me organize my notes perfectly right before my exams. A real lifesaver!',
-    },
-    {
-      name: 'Priya',
-      avatar: 'P',
-      quote:
-        'This is the best PDF tool for students, hands down. So simple and effective.',
-    },
-    {
-      name: 'Aman',
-      avatar: 'A',
-      quote:
-        'I saved so much on printing costs by fitting more slides onto one page. Thank you!',
-    },
-  ];
-  return (
-    <section className="w-full py-20 md:py-24 bg-secondary/30">
-      <div className="container mx-auto px-4 md:px-6">
-        <h2 className="text-3xl font-bold tracking-tighter text-center sm:text-4xl md:text-5xl">
-          What Students Say
-        </h2>
-        <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((testimonial, index) => (
-            <Card key={index} className="bg-card">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-1 text-yellow-400 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 fill-current" />
-                  ))}
-                </div>
-                <p className="text-foreground mb-4">"{testimonial.quote}"</p>
-                <div className="flex items-center gap-3">
-                  <Avatar>
-                    <AvatarFallback>{testimonial.avatar}</AvatarFallback>
-                  </Avatar>
-                  <p className="font-semibold text-sm">&mdash; {testimonial.name}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+const LandingCTA = ({ onStart }: { onStart: () => void }) => (
+  <section className="w-full py-20">
+    <div className="container mx-auto max-w-3xl px-4 md:px-6 text-center">
+      <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
+        Start Using EduSlide for Free
+      </h2>
+      <p className="mt-4 text-muted-foreground">
+        No sign-up required. Just upload your file and start creating.
+      </p>
+      <div className="mt-6">
+        <Button size="lg" onClick={onStart}>
+          Upload PDF and Start Now
+          <ArrowRight className="ml-2" />
+        </Button>
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
+
 
 export default function Home() {
   const [step, setStep] = useState<
@@ -234,12 +204,6 @@ export default function Home() {
     setStep('upload');
   };
 
-  const handleLogoClick = () => {
-    setPages([]);
-    setGeneratedPdf(null);
-    setStep('landing');
-  };
-
   const handleUpload = async (file: File) => {
     setStep('processing');
     setProcessingProgress(0);
@@ -251,7 +215,6 @@ export default function Home() {
           const pdf = await pdfjsLib.getDocument(typedarray).promise;
           const newPages: Page[] = [];
 
-          // Use a higher scale for better resolution, closer to 300 DPI
           const scale = 2.5;
 
           for (let i = 1; i <= pdf.numPages; i++) {
@@ -267,7 +230,6 @@ export default function Home() {
                 .promise;
               newPages.push({
                 id: i,
-                // Use PNG for lossless image quality
                 sourceUrl: canvas.toDataURL('image/png'),
                 sourceHint: `page ${i}`,
                 selected: true,
@@ -334,33 +296,20 @@ export default function Home() {
     if (step === 'reorder') return 1;
     if (step === 'customize' || step === 'generating') return 2;
     if (step === 'download') return 3;
-    return -1; // For 'landing' step
+    return -1;
   }, [step]);
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center bg-background text-foreground">
-      <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur-sm">
-        <div className="container mx-auto flex h-16 max-w-7xl items-center justify-center px-4 md:justify-between">
-          <Link
-            href="/"
-            onClick={handleLogoClick}
-            className="flex items-center gap-2"
-          >
-            <Layers className="h-7 w-7 text-primary" />
-            <h1 className="text-2xl font-bold tracking-tight">EduSlide</h1>
-          </Link>
-        </div>
-      </header>
-
+    <div className="flex min-h-screen w-full flex-col items-center">
       {step === 'landing' ? (
-        <main className="w-full">
+        <div className="w-full">
           <LandingHero onStart={handleStartUpload} />
-          <TrustSection />
-          <WhyEduSlideSection />
-          <TestimonialsSection />
-        </main>
+          <StatsSection />
+          <FeaturesSection />
+          <LandingCTA onStart={handleStartUpload} />
+        </div>
       ) : (
-        <main className="container mx-auto flex w-full max-w-7xl flex-1 flex-col items-center px-4 py-8 md:py-12">
+        <div className="container mx-auto flex w-full max-w-7xl flex-1 flex-col items-center px-4 py-8 md:py-12">
           <div className="w-full space-y-8">
             {step !== 'upload' &&
               step !== 'processing' &&
@@ -404,16 +353,8 @@ export default function Home() {
               <DownloadStep generatedPdf={generatedPdf} onStartOver={handleStartOver} />
             )}
           </div>
-        </main>
-      )}
-
-      <footer className="w-full py-4">
-        <div className="container mx-auto max-w-7xl px-4 text-center text-sm text-muted-foreground">
-          <p>
-            &copy; {new Date().getFullYear()} EduSlide. All rights reserved.
-          </p>
         </div>
-      </footer>
+      )}
     </div>
   );
 }
