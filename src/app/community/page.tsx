@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Twitter, Instagram, Youtube, Send, Zap, MessageSquare, Star } from 'lucide-react';
 import type { ComponentProps } from 'react';
-import { Header } from '@/components/layout/header';
 
 // Using an inline SVG for the brand-accurate Discord icon
 const DiscordIcon = (props: ComponentProps<'svg'>) => (
@@ -29,8 +28,7 @@ const whyJoin = [
 export default function CommunityPage() {
   return (
     <>
-      <Header />
-      <div className="container mx-auto max-w-5xl px-4 pt-28 pb-12 md:pt-32 md:pb-20">
+      <div className="container mx-auto max-w-5xl px-4 pt-8 pb-12 md:pt-12 md:pb-20">
           <div className="space-y-16">
               <div className="text-center">
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Join Our Community</h1>

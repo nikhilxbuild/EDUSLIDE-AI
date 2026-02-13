@@ -1,11 +1,9 @@
-import { Header } from '@/components/layout/header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function PrivacyPage() {
   return (
     <>
-      <Header />
-      <div className="container mx-auto max-w-4xl px-4 pt-28 pb-12 md:pt-32 md:pb-20">
+      <div className="container mx-auto max-w-4xl px-4 pt-8 pb-12 md:pt-12 md:pb-20">
         <Card className="glassmorphic">
           <CardHeader>
             <CardTitle className="text-center text-4xl">Privacy Policy</CardTitle>

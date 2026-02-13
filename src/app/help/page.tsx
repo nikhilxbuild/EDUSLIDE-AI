@@ -3,7 +3,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Header } from '@/components/layout/header';
 
 const faqs = [
     {
@@ -41,8 +40,7 @@ const faqs = [
 export default function HelpPage() {
   return (
     <>
-      <Header />
-      <div className="container mx-auto max-w-4xl px-4 pt-28 pb-12 md:pt-32 md:pb-20">
+      <div className="container mx-auto max-w-4xl px-4 pt-8 pb-12 md:pt-12 md:pb-20">
           <div className="space-y-8">
               <div className="text-center">
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Help Center</h1>

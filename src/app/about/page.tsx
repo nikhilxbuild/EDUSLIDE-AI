@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, Rocket, Eye, Gem, Zap, Shield, BookOpen, Heart } from 'lucide-react';
-import { Header } from '@/components/layout/header';
 
 const values = [
     { icon: Users, title: "Student First", description: "Every feature is designed for learners." },
@@ -22,8 +21,7 @@ const whatWeDo = [
 export default function AboutPage() {
   return (
     <>
-      <Header />
-      <div className="container mx-auto max-w-5xl px-4 pt-28 pb-12 md:pt-32 md:pb-20">
+      <div className="container mx-auto max-w-5xl px-4 pt-8 pb-12 md:pt-12 md:pb-20">
       <div className="space-y-12">
           <div className="text-center">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">About EduSlide</h1>

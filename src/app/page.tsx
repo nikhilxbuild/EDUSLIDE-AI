@@ -27,7 +27,6 @@ import { StepIndicator } from '@/components/app/step-indicator';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Header } from '@/components/layout/header';
 
 if (typeof window !== 'undefined') {
   pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
@@ -289,7 +288,6 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen w-full flex-col">
-      {step === 'landing' && <Header />}
       {step === 'landing' ? (
         <>
           <LandingHero onStart={handleStartUpload} />

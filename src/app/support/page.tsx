@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { Server, Zap, Rocket, HandCoins, Heart } from 'lucide-react';
-import { Header } from '@/components/layout/header';
 
 const whySupport = [
     { icon: Server, text: "Server Maintenance" },
@@ -15,8 +14,7 @@ const whySupport = [
 export default function SupportPage() {
   return (
     <>
-      <Header />
-      <div className="container mx-auto max-w-4xl px-4 pt-28 pb-12 md:pt-32 md:pb-20">
+      <div className="container mx-auto max-w-4xl px-4 pt-8 pb-12 md:pt-12 md:pb-20">
           <div className="space-y-12 text-center">
               <div>
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Support EduSlide</h1>

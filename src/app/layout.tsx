@@ -3,6 +3,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { Footer } from '@/components/layout/footer';
 import { MobileNav } from '@/components/layout/mobile-nav';
+import { Header } from '@/components/layout/header';
 
 export const metadata: Metadata = {
   title: 'EduSlide',
@@ -29,8 +30,9 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased animated-gradient-background text-foreground">
+        <Header />
         <div className="flex min-h-screen flex-col">
-            <main className="flex-grow relative z-10">{children}</main>
+            <main className="flex-grow relative z-10 pt-20">{children}</main>
             <Footer />
         </div>
         {/* This spacer creates room for the fixed mobile nav, making the footer clickable */}
