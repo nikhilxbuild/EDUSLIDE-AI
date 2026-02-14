@@ -24,7 +24,7 @@ export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
           <li key={step.title} className="flex-1">
             <div
               className={cn(
-                'flex flex-col items-center justify-center gap-y-2 border-primary py-2 transition-colors md:flex-row md:gap-x-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4',
+                'flex flex-col items-center justify-center gap-y-2 py-2 transition-colors md:flex-row md:gap-x-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4',
                 stepIdx < currentStep
                   ? 'border-primary'
                   : stepIdx === currentStep
@@ -60,7 +60,7 @@ export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
               <span className="text-center text-sm font-medium">
                 <span
                   className={cn(
-                    'hidden md:block',
+                    'block',
                     stepIdx === currentStep
                       ? 'text-primary'
                       : 'text-muted-foreground'
@@ -70,15 +70,6 @@ export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
                 </span>
               </span>
             </div>
-            {stepIdx !== steps.length - 1 ? (
-              <div
-                className={cn(
-                  'absolute left-0 top-1/2 -mt-px h-0.5 w-full md:hidden',
-                  stepIdx < currentStep ? 'bg-primary' : 'bg-border'
-                )}
-                aria-hidden="true"
-              />
-            ) : null}
           </li>
         ))}
       </ol>
