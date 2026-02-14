@@ -87,8 +87,7 @@ export default function ToolPage() {
                 const pdf = await pdfjsLib.getDocument(typedarray).promise;
                 const newPagesFromFile: Page[] = [];
                 
-                // Use a higher quality source image for better final output
-                const scale = 1.5; 
+                const scale = 1.5; // Use a reasonable scale for previews
 
                 for (let j = 1; j <= pdf.numPages; j++) {
                   const page = await pdf.getPage(j);
@@ -102,8 +101,8 @@ export default function ToolPage() {
                     await page.render({ canvasContext: context, viewport: viewport }).promise;
                     newPagesFromFile.push({
                       id: pageIdCounter++,
-                      // Use PNG for lossless previews to feed into the generator
-                      sourceUrl: canvas.toDataURL('image/png'),
+                      // Use JPEG for smaller memory footprint for previews
+                      sourceUrl: canvas.toDataURL('image/jpeg', 0.85),
                       sourceHint: `Page ${j} of ${file.name}`,
                       selected: true,
                     });
@@ -144,9 +143,12 @@ export default function ToolPage() {
     setStep('generating');
     setGenerationProgress(0);
 
-    const newFileName = customization.colorMode.invert
-      ? `${sourceFileName}_invert_300dpi.pdf`
-      : `${sourceFileName}_enhanced.pdf`;
+    let newFileName = `${sourceFileName}_enhanced.pdf`;
+    if (customization.colorMode.invert) {
+      newFileName = `${sourceFileName}_invert_300dpi.pdf`;
+    } else if (customization.colorMode.bw || customization.colorMode.grayscale) {
+      newFileName = `${sourceFileName}_bw_300dpi.pdf`;
+    }
     setDownloadFileName(newFileName);
 
     try {
