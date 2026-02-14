@@ -11,9 +11,10 @@ import {
   Droplets,
   Wand2,
 } from 'lucide-react';
+import Image from 'next/image';
 
 import type { Page, CustomizationOptions } from '@/lib/types';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
@@ -21,6 +22,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { NUpMockPreview } from './n-up-preview';
+import { cn } from '@/lib/utils';
 
 interface CustomizeStepProps {
   pages: Page[];
@@ -29,6 +31,48 @@ interface CustomizeStepProps {
   onGenerate: () => void;
   onBack: () => void;
 }
+
+const PagePreview = ({ page, customization }: { page?: Page, customization: CustomizationOptions }) => {
+  if (!page) return null;
+
+  const getFilterClass = () => {
+    if (customization.colorMode.invert) {
+      return 'invert hue-rotate-180';
+    }
+    if (customization.colorMode.grayscale || customization.colorMode.bw) {
+      return 'grayscale';
+    }
+    return '';
+  };
+  
+  return (
+    <Card className="bg-secondary/50 mt-6">
+      <CardHeader>
+        <CardTitle className="text-base">Page Preview</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div 
+          className={cn(
+              'rounded-md overflow-hidden border border-border',
+              customization.colorMode.invert && 'bg-white p-1'
+          )}
+        >
+          <Image
+            src={page.sourceUrl}
+            alt="Page preview"
+            width={400}
+            height={560}
+            className={cn(
+                'w-full h-auto rounded-sm',
+                getFilterClass()
+            )}
+          />
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
 
 export function CustomizeStep({
   pages,
@@ -49,7 +93,8 @@ export function CustomizeStep({
   useEffect(() => {
     setLocalCols(customization.cols);
   }, [customization.cols]);
-
+  
+  const firstSelectedPage = pages.find((p) => p.selected);
   const selectedPagesCount = pages.filter((p) => p.selected).length;
   // The summary card uses the committed values from the parent state
   const { rows, cols } = customization;
@@ -261,6 +306,7 @@ export function CustomizeStep({
               selectedPagesCount={selectedPagesCount}
               sheetsCount={sheetsCount}
             />
+            <PagePreview page={firstSelectedPage} customization={customization} />
           </div>
         </div>
 
