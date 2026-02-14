@@ -188,28 +188,49 @@ async function generateHighQualityInvertPdf(
 
       ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, canvas.width, canvas.height);
       
-      // --- START: LUMINANCE-BASED INVERT LOGIC ---
+      // --- START: ADVANCED COLOR INVERT LOGIC ---
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
       
+      const contrast = 4; // Approx 4% contrast boost
+      const contrastFactor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+
       for (let k = 0; k < data.length; k += 4) {
-        const r = data[k];
-        const g = data[k+1];
-        const b = data[k+2];
+        // Capture original colors
+        const originalR = data[k];
+        const originalG = data[k + 1];
+        const originalB = data[k + 2];
 
-        // 1. Convert to grayscale using luminance formula
-        const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+        // White Background Protection: If pixel is very light, snap to pure white
+        const originalLuminance = 0.299 * originalR + 0.587 * originalG + 0.114 * originalB;
+        if (originalLuminance > 230) {
+            data[k] = 255;
+            data[k + 1] = 255;
+            data[k + 2] = 255;
+            continue; // Skip to next pixel
+        }
+
+        // Proper RGB Inversion (per channel)
+        let r = 255 - originalR;
+        let g = 255 - originalG;
+        let b = 255 - originalB;
+
+        // Cyan/Blue Dominance Correction
+        g *= 0.98; // Reduce green slightly
+        b *= 0.96; // Reduce blue slightly
+
+        // Mild Contrast Boost
+        r = contrastFactor * (r - 128) + 128;
+        g = contrastFactor * (g - 128) + 128;
+        b = contrastFactor * (b - 128) + 128;
         
-        // 2. Invert the grayscale value
-        const inverted = 255 - gray;
-
-        // 3. Reconstruct image with the inverted value for all channels
-        data[k] = inverted;
-        data[k+1] = inverted;
-        data[k+2] = inverted;
+        // Clamp values to the valid 0-255 range
+        data[k] = Math.max(0, Math.min(255, r));
+        data[k + 1] = Math.max(0, Math.min(255, g));
+        data[k + 2] = Math.max(0, Math.min(255, b));
       }
       ctx.putImageData(imageData, 0, 0);
-      // --- END: LUMINANCE-BASED INVERT LOGIC ---
+      // --- END: ADVANCED COLOR INVERT LOGIC ---
 
       const processedImageBytes = await fetch(canvas.toDataURL('image/jpeg', 0.95)).then((res) => res.arrayBuffer());
       const pdfImage = await newPdfDoc.embedJpg(processedImageBytes);
@@ -465,7 +486,7 @@ export async function generatePdf(
       const sourceX = image.width * cropAmount;
       const sourceY = image.height * cropAmount;
       const sourceWidth = image.width * (1 - cropAmount * 2);
-      const sourceHeight = image.height * (1 - cropAmount * 2);
+      const sourceHeight = image.height * cropAmount;
 
       ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, canvas.width, canvas.height);
 
