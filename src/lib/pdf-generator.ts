@@ -136,32 +136,25 @@ async function generateHighQualityInvertPdf(
         const invG = 255 - data[k + 1];
         const invB = 255 - data[k + 2];
 
-        // Now, check the inverted pixel for background conditions
-        
-        // Condition 1: is very light gray/white
-        const isLight = invR > 230 && invG > 230 && invB > 230;
+        // Check if the *inverted* pixel is a neutral light gray. This corresponds
+        // to the dark background of the original image.
+        const y = 0.299 * invR + 0.587 * invG + 0.114 * invB;
+        const rgDiff = Math.abs(invR - invG);
+        const gbDiff = Math.abs(invG - invB);
+        const rbDiff = Math.abs(invR - invB);
 
-        // Condition 2: has very low saturation
-        const r_norm = invR / 255;
-        const g_norm = invG / 255;
-        const b_norm = invB / 255;
+        const isBackground = y > 210 && rgDiff < 15 && gbDiff < 15 && rbDiff < 15;
         
-        const max = Math.max(r_norm, g_norm, b_norm);
-        const min = Math.min(r_norm, g_norm, b_norm);
-        const delta = max - min;
-        const saturation = max === 0 ? 0 : delta / max;
-        const isDesaturated = saturation < 0.1;
-
-        if (isLight || isDesaturated) {
-          // Force to pure white
+        if (isBackground) {
+          // This is a background pixel, force to pure white.
           data[k] = 255;
           data[k + 1] = 255;
           data[k + 2] = 255;
         } else {
-          // Keep the inverted foreground colors
+          // This is a content pixel. Keep the existing color-corrected inversion.
           data[k] = invR;
-          data[k + 1] = invG;
-          data[k + 2] = invB;
+          data[k + 1] = Math.min(255, invG * 1.02);
+          data[k + 2] = Math.min(255, invB * 1.04);
         }
       }
       ctx.putImageData(imageData, 0, 0);
