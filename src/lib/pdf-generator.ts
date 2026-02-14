@@ -264,13 +264,24 @@ async function generateHighQualityBWPdf(
       const data = imageData.data;
       
       // High-contrast Black & White Thresholding for a "scanned" look
-      const threshold = 225; 
+      const contrast = 15;
+      const factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+      
       for (let k = 0; k < data.length; k += 4) {
+        // Luma-based grayscale conversion for accurate brightness
         const luma = 0.299 * data[k] + 0.587 * data[k + 1] + 0.114 * data[k + 2];
-        const finalValue = luma > threshold ? 255 : 0;
-        data[k] = finalValue;
-        data[k + 1] = finalValue;
-        data[k + 2] = finalValue;
+        
+        let contrastedLuma = factor * (luma - 128) + 128;
+        contrastedLuma = Math.max(0, Math.min(255, contrastedLuma));
+
+        // Clean background by pushing light grays to pure white
+        if (contrastedLuma > 250) {
+            contrastedLuma = 255;
+        }
+
+        data[k] = contrastedLuma;
+        data[k + 1] = contrastedLuma;
+        data[k + 2] = contrastedLuma;
       }
       ctx.putImageData(imageData, 0, 0);
 
