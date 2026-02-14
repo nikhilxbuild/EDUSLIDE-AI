@@ -65,13 +65,14 @@
 }
 
 @layer utilities {
-  .glow-on-hover:hover {
-    box-shadow: 0 0 15px 1px hsl(var(--primary) / 0.3),
-      0 0 5px 1px hsl(var(--primary) / 0.2);
-  }
   .glassmorphic {
-    background: hsl(var(--card) / 0.5);
-    @apply backdrop-blur-lg border-border/20;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    @apply backdrop-blur-lg transition-all duration-300;
+  }
+  .glassmorphic:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 0 20px 2px hsl(var(--primary) / 0.2);
   }
   .animated-gradient-background {
     background-color: hsl(var(--background));

@@ -18,7 +18,7 @@ export function StepIndicator({ steps, currentStep }: StepIndicatorProps) {
     <nav aria-label="Progress">
       <ol
         role="list"
-        className="flex items-center justify-center space-x-2 rounded-full border bg-card p-2 md:space-x-4"
+        className="flex items-center justify-center space-x-2 rounded-full glassmorphic p-2 md:space-x-4"
       >
         {steps.map((step, stepIdx) => (
           <li key={step.title} className="flex-1">

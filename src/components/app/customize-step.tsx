@@ -56,7 +56,7 @@ export function CustomizeStep({
   const sheetsCount = Math.ceil(selectedPagesCount / (rows * cols));
 
   return (
-    <Card>
+    <Card className="glassmorphic">
       <CardContent className="p-6">
         <div className="space-y-2">
           <h2 className="text-2xl font-bold tracking-tight">

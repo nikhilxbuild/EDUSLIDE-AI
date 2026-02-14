@@ -68,7 +68,7 @@ export function UploadStep({ onUpload }: UploadStepProps) {
         </p>
       </div>
 
-      <Card className="w-full max-w-2xl">
+      <Card className="w-full max-w-2xl glassmorphic">
         <CardContent
           className="flex h-full w-full flex-col items-center justify-center p-6"
           onDragEnter={handleDragEnter}
@@ -78,7 +78,7 @@ export function UploadStep({ onUpload }: UploadStepProps) {
         >
           <div
             className={cn(
-              'flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-background transition-colors',
+              'flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-transparent transition-colors',
               isDragging ? 'border-primary bg-accent/20' : ''
             )}
             onClick={() => fileInputRef.current?.click()}

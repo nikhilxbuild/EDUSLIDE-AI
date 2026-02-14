@@ -132,7 +132,7 @@ const FeaturesSection = () => {
         </h2>
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
-            <Card key={index} className="glassmorphic glow-on-hover transition-all duration-300">
+            <Card key={index} className="glassmorphic transition-all duration-300">
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
                   <div className="p-2 rounded-md bg-primary/10 text-primary">

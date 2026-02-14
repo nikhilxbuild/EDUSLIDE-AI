@@ -17,7 +17,7 @@ export function GenerateStep({
 }: GenerateStepProps) {
   return (
     <div className="flex w-full flex-col items-center justify-center space-y-6 text-center">
-      <Card className="w-full max-w-lg">
+      <Card className="w-full max-w-lg glassmorphic">
         <CardContent className="p-8">
           <div className="space-y-4">
             <h2 className="pt-4 text-2xl font-bold tracking-tight">{title}</h2>

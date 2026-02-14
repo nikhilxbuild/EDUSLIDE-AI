@@ -64,7 +64,7 @@ export function ReorderStep({
   const selectedCount = pages.filter((p) => p.selected).length;
 
   return (
-    <Card>
+    <Card className="glassmorphic">
       <CardContent className="p-6">
         <div className="space-y-2">
           <h2 className="text-2xl font-bold tracking-tight">
@@ -76,7 +76,7 @@ export function ReorderStep({
           </p>
         </div>
 
-        <div className="my-6 flex items-center justify-between rounded-md border bg-card p-3">
+        <div className="my-6 flex items-center justify-between rounded-md border bg-transparent p-3">
           <div className="flex items-center space-x-2">
             <Checkbox
               id="select-all"
