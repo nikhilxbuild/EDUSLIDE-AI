@@ -188,38 +188,28 @@ async function generateHighQualityInvertPdf(
 
       ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, canvas.width, canvas.height);
       
-      // --- START: NEW HIGH-QUALITY INVERT LOGIC ---
+      // --- START: LUMINANCE-BASED INVERT LOGIC ---
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
-      const contrast = 5; // Mild +5% contrast
-      const contrastFactor = (259 * (contrast + 255)) / (255 * (259 - contrast));
       
       for (let k = 0; k < data.length; k += 4) {
-        let r = data[k];
-        let g = data[k+1];
-        let b = data[k+2];
+        const r = data[k];
+        const g = data[k+1];
+        const b = data[k+2];
 
-        // 1. Controlled Inversion via HSL
-        const [h, s, l] = rgbToHsl(r, g, b);
-        const invertedL = 1.0 - l;
+        // 1. Convert to grayscale using luminance formula
+        const gray = 0.299 * r + 0.587 * g + 0.114 * b;
         
-        // 2. Mild Desaturation (20%) to prevent intense colors
-        const desaturatedS = s * 0.8;
+        // 2. Invert the grayscale value
+        const inverted = 255 - gray;
 
-        [r, g, b] = hslToRgb(h, desaturatedS, invertedL);
-
-        // 3. Apply mild contrast correction
-        r = contrastFactor * (r - 128) + 128;
-        g = contrastFactor * (g - 128) + 128;
-        b = contrastFactor * (b - 128) + 128;
-        
-        // Clamp values to the 0-255 range
-        data[k] = Math.max(0, Math.min(255, r));
-        data[k+1] = Math.max(0, Math.min(255, g));
-        data[k+2] = Math.max(0, Math.min(255, b));
+        // 3. Reconstruct image with the inverted value for all channels
+        data[k] = inverted;
+        data[k+1] = inverted;
+        data[k+2] = inverted;
       }
       ctx.putImageData(imageData, 0, 0);
-      // --- END: NEW HIGH-QUALITY INVERT LOGIC ---
+      // --- END: LUMINANCE-BASED INVERT LOGIC ---
 
       const processedImageBytes = await fetch(canvas.toDataURL('image/jpeg', 0.95)).then((res) => res.arrayBuffer());
       const pdfImage = await newPdfDoc.embedJpg(processedImageBytes);
