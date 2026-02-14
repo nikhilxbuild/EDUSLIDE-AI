@@ -8,9 +8,10 @@ import { Card, CardContent } from '@/components/ui/card';
 interface DownloadStepProps {
   generatedPdf: Uint8Array | null;
   onStartOver: () => void;
+  fileName: string;
 }
 
-export function DownloadStep({ generatedPdf, onStartOver }: DownloadStepProps) {
+export function DownloadStep({ generatedPdf, onStartOver, fileName }: DownloadStepProps) {
   const handleDownloadAgain = () => {
     if (!generatedPdf) return;
 
@@ -18,7 +19,7 @@ export function DownloadStep({ generatedPdf, onStartOver }: DownloadStepProps) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'eduslide-output.pdf';
+    a.download = fileName;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

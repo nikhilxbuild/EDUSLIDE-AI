@@ -133,6 +133,11 @@ export async function generatePdf(
       canvas.height = finalCanvasHeight;
       const ctx = canvas.getContext('2d', { willReadFrequently: true });
       if (!ctx) throw new Error('Could not get canvas context');
+      
+      // Ensure pure white background to prevent tinting issues
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
 
       // Draw the (potentially cropped) high-res source image onto the smaller canvas.
       // This performs the downscaling.

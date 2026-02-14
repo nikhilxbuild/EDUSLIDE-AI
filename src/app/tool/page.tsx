@@ -226,7 +226,7 @@ export default function ToolPage() {
               />
             )}
             {step === 'download' && (
-              <DownloadStep generatedPdf={generatedPdf} onStartOver={handleStartOver} />
+              <DownloadStep generatedPdf={generatedPdf} onStartOver={handleStartOver} fileName={`${sourceFileName}_enhanced.pdf`} />
             )}
           </div>
         </div>
