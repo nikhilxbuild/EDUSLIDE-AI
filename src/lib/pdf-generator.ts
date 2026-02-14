@@ -44,8 +44,8 @@ export async function generatePdf(
   customization: CustomizationOptions,
   setProgress: (progress: number) => void
 ): Promise<Uint8Array> {
-  // --- HIGH-QUALITY INVERT & B&W PIPELINE ---
-  if (customization.colorMode.invert || customization.colorMode.bw) {
+  // --- HIGH-QUALITY INVERT, B&W, and GRAYSCALE PIPELINE ---
+  if (customization.colorMode.invert || customization.colorMode.bw || customization.colorMode.grayscale) {
     let pagesToProcess = pages.filter((p) => p.selected);
     setProgress(5);
 
@@ -258,22 +258,6 @@ export async function generatePdf(
         const sourceHeight = image.height * (1 - cropAmount * 2);
 
         ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, canvas.width, canvas.height);
-
-        const anyFilterEnabled = colorMode.grayscale;
-
-        if (anyFilterEnabled) {
-          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          const data = imageData.data;
-          for (let k = 0; k < data.length; k += 4) {
-              const luma = 0.299 * data[k] + 0.587 * data[k+1] + 0.114 * data[k+2];
-              const finalValue = luma;
-              
-              data[k] = finalValue;
-              data[k + 1] = finalValue;
-              data[k + 2] = finalValue;
-          }
-          ctx.putImageData(imageData, 0, 0);
-        }
 
         const processedImageBytes = await fetch(canvas.toDataURL('image/jpeg', 0.92)).then((res) => res.arrayBuffer());
         const pdfImage = await newPdfDoc.embedJpg(processedImageBytes);
