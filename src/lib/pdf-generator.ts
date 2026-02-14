@@ -110,8 +110,8 @@ export async function generatePdf(
       const sourceHeight = image.height * (1 - cropAmount * 2);
 
       // Determine optimal canvas size for embedding for high quality.
-      // Aim for 300 DPI in the final PDF cell for print-readiness.
-      const targetEmbedDPI = 300;
+      // Aim for 350 DPI in the final PDF cell for enhanced print-readiness.
+      const targetEmbedDPI = 350;
       const embedScaleFactor = targetEmbedDPI / 72; // PDF points are 1/72 inch
       const targetCellPixelWidth = cellWidth * embedScaleFactor;
       const targetCellPixelHeight = cellHeight * embedScaleFactor;

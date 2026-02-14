@@ -51,6 +51,7 @@ export default function ToolPage() {
   const [processingProgress, setProcessingProgress] = useState(0);
   const [generationProgress, setGenerationProgress] = useState(0);
   const [generatedPdf, setGeneratedPdf] = useState<Uint8Array | null>(null);
+  const [sourceFileName, setSourceFileName] = useState<string>('eduslide-output');
   const { toast } = useToast();
 
   useEffect(() => {
@@ -62,6 +63,14 @@ export default function ToolPage() {
     setProcessingProgress(0);
     const allPages: Page[] = [];
     let pageIdCounter = 1;
+
+    if (files.length > 0) {
+        const firstFile = files[0];
+        const baseName = firstFile.name.toLowerCase().endsWith('.pdf') 
+            ? firstFile.name.slice(0, -4) 
+            : firstFile.name;
+        setSourceFileName(baseName);
+    }
 
     try {
       for (let i = 0; i < files.length; i++) {
@@ -77,7 +86,7 @@ export default function ToolPage() {
                 const pdf = await pdfjsLib.getDocument(typedarray).promise;
                 const newPagesFromFile: Page[] = [];
                 
-                const scale = 0.5; // Reduced scale for smaller thumbnails
+                const scale = 1.0; // Use higher resolution for thumbnails
 
                 for (let j = 1; j <= pdf.numPages; j++) {
                   const page = await pdf.getPage(j);
@@ -91,7 +100,7 @@ export default function ToolPage() {
                     await page.render({ canvasContext: context, viewport: viewport }).promise;
                     newPagesFromFile.push({
                       id: pageIdCounter++,
-                      sourceUrl: canvas.toDataURL('image/jpeg', 0.75), // Use compressed JPEG
+                      sourceUrl: canvas.toDataURL('image/png'), // Use lossless PNG for quality
                       sourceHint: `Page ${j} of ${file.name}`,
                       selected: true,
                     });
@@ -140,7 +149,7 @@ export default function ToolPage() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'eduslide-output.pdf';
+      a.download = `${sourceFileName}_enhanced.pdf`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -162,6 +171,7 @@ export default function ToolPage() {
   const handleStartOver = () => {
     setPages([]);
     setGeneratedPdf(null);
+    setSourceFileName('eduslide-output');
     setStep('upload');
   };
 
