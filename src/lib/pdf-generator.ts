@@ -129,19 +129,29 @@ async function generateHighQualityInvertPdf(
       
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
+
+      const getSaturation = (r, g, b) => {
+        r /= 255; g /= 255; b /= 255;
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
+        if (max === min) return 0; // achromatic
+        const d = max - min;
+        const l = (max + min) / 2;
+        return l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      };
       
       for (let k = 0; k < data.length; k += 4) {
-        // Apply the "perfect" inversion first
+        // Apply the "perfect" inversion first to get the candidate pixel color
         const invR = 255 - data[k];
         const invG = 255 - data[k+1];
         const invB = 255 - data[k+2];
         
-        // Now check if this inverted pixel is a background candidate
-        const Y = 0.2126 * invR + 0.7152 * invG + 0.0722 * invB;
-        const isBackground = Y > 210 && 
-                             Math.abs(invR - invG) < 12 &&
-                             Math.abs(invG - invB) < 12 &&
-                             Math.abs(invR - invB) < 12;
+        // Analyze the INVERTED pixel to determine if it's background
+        const luma = 0.2126 * invR + 0.7152 * invG + 0.0722 * invB;
+        const saturation = getSaturation(invR, invG, invB);
+
+        // A pixel is background if it's very light and not very colorful,
+        // or if it's almost pure white (hard enforcement).
+        const isBackground = (luma > 220 && saturation < 0.20) || (invR > 230 && invG > 230 && invB > 230);
 
         if (isBackground) {
             // It's background, force to pure white.
@@ -149,7 +159,7 @@ async function generateHighQualityInvertPdf(
             data[k+1] = 255;
             data[k+2] = 255;
         } else {
-            // It's foreground, keep the perfectly inverted color with slight correction.
+            // It's foreground, keep the "perfect" inverted color with slight correction.
             data[k] = invR;
             data[k+1] = Math.min(255, invG * 1.02);
             data[k+2] = Math.min(255, invB * 1.04);
@@ -274,13 +284,17 @@ async function generateHighQualityBWPdf(
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
       
-      // Binarization logic
+      // High quality B&W binarization
       for (let k = 0; k < data.length; k += 4) {
-        const luma = 0.299 * data[k] + 0.587 * data[k + 1] + 0.114 * data[k + 2];
-        let finalValue = luma < 150 ? 0 : 255;
-        if (luma > 245) finalValue = 255;
-        if (luma < 40) finalValue = 0;
+        // BT.709 Luminance
+        const luma = 0.2126 * data[k] + 0.7152 * data[k + 1] + 0.0722 * data[k + 2];
         
+        let finalValue = 255; // Default to white
+        // Adaptive thresholding logic could go here, for now using a tuned curve
+        if (luma < 180) finalValue = 0; // Strong ink
+        if (luma > 245) finalValue = 255; // Paper white
+        if (luma < 40) finalValue = 0; // Black reinforcement
+
         data[k] = finalValue;
         data[k + 1] = finalValue;
         data[k + 2] = finalValue;
