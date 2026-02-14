@@ -90,9 +90,15 @@ export default function AboutPage() {
               <CardHeader>
                   <CardTitle className="text-center">Our Story</CardTitle>
               </CardHeader>
-              <CardContent>
-                  <p className="text-muted-foreground text-center max-w-3xl mx-auto">
-                      EduSlide was created by students who faced daily problems in printing and organizing study material. After wasting time and money on manual editing, we decided to build a simple tool that solves this problem for everyone. Today, EduSlide helps thousands of students prepare better for exams.
+              <CardContent className="text-center max-w-3xl mx-auto">
+                  <p className="text-muted-foreground">
+                      EduSlide was born out of personal frustration. As a student, I constantly battled with messy PDFs, wasting hours trying to arrange lecture notes for printing, only to end up with poorly formatted pages. The money spent on re-prints and the time lost that could have been used for studying was immense.
+                  </p>
+                  <p className="text-muted-foreground mt-4">
+                      I knew there had to be a better way. While learning to code, I decided to build the solution myself—a simple, free, and powerful tool designed for the specific needs of students like me.
+                  </p>
+                  <p className="text-muted-foreground mt-4">
+                      This platform is the result of that journey. It's built by a student, for students, with the goal of helping you save time, reduce costs, and most importantly, focus on what truly matters: learning.
                   </p>
               </CardContent>
           </Card>
