@@ -44,8 +44,8 @@ export async function generatePdf(
   customization: CustomizationOptions,
   setProgress: (progress: number) => void
 ): Promise<Uint8Array> {
-  // --- HIGH-QUALITY INVERT PIPELINE ---
-  if (customization.colorMode.invert) {
+  // --- HIGH-QUALITY INVERT & B&W PIPELINE ---
+  if (customization.colorMode.invert || customization.colorMode.bw) {
     let pagesToProcess = pages.filter((p) => p.selected);
     setProgress(5);
 
@@ -139,8 +139,10 @@ export async function generatePdf(
         
         for (let k = 0; k < data.length; k += 4) {
           const luma = 0.299 * data[k] + 0.587 * data[k + 1] + 0.114 * data[k + 2];
-          const invertedLuma = 255 - luma;
-          let contrastedLuma = contrastFactor * (invertedLuma - 128) + 128;
+          
+          const baseLuma = customization.colorMode.invert ? 255 - luma : luma;
+          
+          let contrastedLuma = contrastFactor * (baseLuma - 128) + 128;
           contrastedLuma = Math.max(0, Math.min(255, contrastedLuma));
           data[k] = contrastedLuma;
           data[k + 1] = contrastedLuma;
@@ -257,20 +259,14 @@ export async function generatePdf(
 
         ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, canvas.width, canvas.height);
 
-        const anyFilterEnabled = colorMode.grayscale || colorMode.bw;
+        const anyFilterEnabled = colorMode.grayscale;
 
         if (anyFilterEnabled) {
           const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
           const data = imageData.data;
           for (let k = 0; k < data.length; k += 4) {
               const luma = 0.299 * data[k] + 0.587 * data[k+1] + 0.114 * data[k+2];
-              let finalValue: number;
-
-              if (colorMode.bw) {
-                  finalValue = luma > 128 ? 255 : 0;
-              } else {
-                  finalValue = luma;
-              }
+              const finalValue = luma;
               
               data[k] = finalValue;
               data[k + 1] = finalValue;
