@@ -39,64 +39,6 @@ async function isPageBlank(
   }
 }
 
-// --- START: HSL/RGB COLOR CONVERSION HELPERS ---
-// These helpers are used exclusively by the new Invert Pipeline
-function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
-  r /= 255;
-  g /= 255;
-  b /= 255;
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  let h = 0, s: number;
-  const l = (max + min) / 2;
-
-  if (max === min) {
-    h = s = 0; // achromatic
-  } else {
-    const d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    switch (max) {
-      case r:
-        h = (g - b) / d + (g < b ? 6 : 0);
-        break;
-      case g:
-        h = (b - r) / d + 2;
-        break;
-      case b:
-        h = (r - g) / d + 4;
-        break;
-    }
-    h /= 6;
-  }
-  return [h, s, l];
-}
-
-function hslToRgb(h: number, s: number, l: number): [number, number, number] {
-  let r: number, g: number, b: number;
-
-  if (s === 0) {
-    r = g = b = l; // achromatic
-  } else {
-    const hue2rgb = (p: number, q: number, t: number): number => {
-      if (t < 0) t += 1;
-      if (t > 1) t -= 1;
-      if (t < 1 / 6) return p + (q - p) * 6 * t;
-      if (t < 1 / 2) return q;
-      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-      return p;
-    };
-
-    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    const p = 2 * l - q;
-    r = hue2rgb(p, q, h + 1 / 3);
-    g = hue2rgb(p, q, h);
-    b = hue2rgb(p, q, h - 1 / 3);
-  }
-  return [r * 255, g * 255, b * 255];
-}
-// --- END: HSL/RGB COLOR CONVERSION HELPERS ---
-
-
 async function generateHighQualityInvertPdf(
   pages: Page[],
   customization: CustomizationOptions,
@@ -188,51 +130,31 @@ async function generateHighQualityInvertPdf(
 
       ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, canvas.width, canvas.height);
       
-      // --- START: ADVANCED COLOR INVERT LOGIC ---
+      // --- START: SELECTIVE COLOR INVERT LOGIC ---
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
       
-      const contrast = 4; // Approx 4% contrast boost
-      const contrastFactor = (259 * (contrast + 255)) / (255 * (259 - contrast));
-
       for (let k = 0; k < data.length; k += 4) {
-        // Capture original colors
-        const originalR = data[k];
-        const originalG = data[k + 1];
-        const originalB = data[k + 2];
+        const r = data[k];
+        const g = data[k + 1];
+        const b = data[k + 2];
 
-        // White Background Protection: If original pixel is very light, make the inverted result pure white.
-        const originalLuminance = 0.299 * originalR + 0.587 * originalG + 0.114 * originalB;
-        if (originalLuminance > 230) {
-            data[k] = 255;
-            data[k + 1] = 255;
-            data[k + 2] = 255;
-            continue; // Skip to next pixel
+        // If pixel is near-white, force it to pure white to clean the background.
+        if (r > 235 && g > 235 && b > 235) {
+          data[k] = 255;
+          data[k + 1] = 255;
+          data[k + 2] = 255;
+        } else {
+          // Otherwise, invert the color of the content (text, diagrams, etc.)
+          data[k] = 255 - r;
+          data[k + 1] = 255 - g;
+          data[k + 2] = 255 - b;
         }
-
-        // Invert using HSL to preserve color hues
-        const [h, s, l] = rgbToHsl(originalR, originalG, originalB);
-        const invertedL = 1.0 - l;
-        let [r, g, b] = hslToRgb(h, s, invertedL);
-
-        // Cyan/Blue Dominance Correction
-        g *= 0.98; // Reduce green slightly to combat cyan
-        b *= 0.96; // Reduce blue slightly
-
-        // Mild Contrast Boost
-        r = contrastFactor * (r - 128) + 128;
-        g = contrastFactor * (g - 128) + 128;
-        b = contrastFactor * (b - 128) + 128;
-        
-        // Clamp values to the valid 0-255 range
-        data[k] = Math.max(0, Math.min(255, r));
-        data[k + 1] = Math.max(0, Math.min(255, g));
-        data[k + 2] = Math.max(0, Math.min(255, b));
       }
       ctx.putImageData(imageData, 0, 0);
-      // --- END: ADVANCED COLOR INVERT LOGIC ---
+      // --- END: SELECTIVE COLOR INVERT LOGIC ---
 
-      const processedImageBytes = await fetch(canvas.toDataURL('image/jpeg', 0.95)).then((res) => res.arrayBuffer());
+      const processedImageBytes = await fetch(canvas.toDataURL('image/jpeg', 0.92)).then((res) => res.arrayBuffer());
       const pdfImage = await newPdfDoc.embedJpg(processedImageBytes);
 
       const { width: imgWidth, height: imgHeight } = pdfImage.scale(1);
@@ -486,7 +408,7 @@ export async function generatePdf(
       const sourceX = image.width * cropAmount;
       const sourceY = image.height * cropAmount;
       const sourceWidth = image.width * (1 - cropAmount * 2);
-      const sourceHeight = image.height * cropAmount;
+      const sourceHeight = image.height * (1 - cropAmount * 2);
 
       ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, canvas.width, canvas.height);
 
