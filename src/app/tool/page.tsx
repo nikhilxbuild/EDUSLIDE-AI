@@ -52,6 +52,7 @@ export default function ToolPage() {
   const [generationProgress, setGenerationProgress] = useState(0);
   const [generatedPdf, setGeneratedPdf] = useState<Uint8Array | null>(null);
   const [sourceFileName, setSourceFileName] = useState<string>('eduslide-output');
+  const [downloadFileName, setDownloadFileName] = useState<string>('eduslide-output_enhanced.pdf');
   const { toast } = useToast();
 
   useEffect(() => {
@@ -86,7 +87,8 @@ export default function ToolPage() {
                 const pdf = await pdfjsLib.getDocument(typedarray).promise;
                 const newPagesFromFile: Page[] = [];
                 
-                const scale = 1.0; // Use higher resolution for thumbnails
+                // Use a higher quality source image for better final output
+                const scale = 1.5; 
 
                 for (let j = 1; j <= pdf.numPages; j++) {
                   const page = await pdf.getPage(j);
@@ -100,7 +102,8 @@ export default function ToolPage() {
                     await page.render({ canvasContext: context, viewport: viewport }).promise;
                     newPagesFromFile.push({
                       id: pageIdCounter++,
-                      sourceUrl: canvas.toDataURL('image/jpeg', 0.85),
+                      // Use PNG for lossless previews to feed into the generator
+                      sourceUrl: canvas.toDataURL('image/png'),
                       sourceHint: `Page ${j} of ${file.name}`,
                       selected: true,
                     });
@@ -141,6 +144,11 @@ export default function ToolPage() {
     setStep('generating');
     setGenerationProgress(0);
 
+    const newFileName = customization.colorMode.invert
+      ? `${sourceFileName}_invert_300dpi.pdf`
+      : `${sourceFileName}_enhanced.pdf`;
+    setDownloadFileName(newFileName);
+
     try {
       const pdfBytes = await generatePdf(pages, customization, setGenerationProgress);
       setGeneratedPdf(pdfBytes);
@@ -149,7 +157,7 @@ export default function ToolPage() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${sourceFileName}_enhanced.pdf`;
+      a.download = newFileName;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -226,7 +234,7 @@ export default function ToolPage() {
               />
             )}
             {step === 'download' && (
-              <DownloadStep generatedPdf={generatedPdf} onStartOver={handleStartOver} fileName={`${sourceFileName}_enhanced.pdf`} />
+              <DownloadStep generatedPdf={generatedPdf} onStartOver={handleStartOver} fileName={downloadFileName} />
             )}
           </div>
         </div>
