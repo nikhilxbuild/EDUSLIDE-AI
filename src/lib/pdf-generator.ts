@@ -263,8 +263,8 @@ async function generateHighQualityBWPdf(
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
       
-      // High-contrast Black & White Thresholding
-      const threshold = 230; 
+      // High-contrast Black & White Thresholding for a "scanned" look
+      const threshold = 225; 
       for (let k = 0; k < data.length; k += 4) {
         const luma = 0.299 * data[k] + 0.587 * data[k + 1] + 0.114 * data[k + 2];
         const finalValue = luma > threshold ? 255 : 0;
