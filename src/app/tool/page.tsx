@@ -92,7 +92,7 @@ export default function ToolPage() {
                   const page = await pdf.getPage(j);
                   const viewport = page.getViewport({ scale });
                   const canvas = document.createElement('canvas');
-                  const context = canvas.getContext('2d');
+                  const context = canvas.getContext('2d', { colorSpace: 'srgb' });
                   canvas.height = viewport.height;
                   canvas.width = viewport.width;
 
@@ -100,7 +100,7 @@ export default function ToolPage() {
                     await page.render({ canvasContext: context, viewport: viewport }).promise;
                     newPagesFromFile.push({
                       id: pageIdCounter++,
-                      sourceUrl: canvas.toDataURL('image/png'), // Use lossless PNG for quality
+                      sourceUrl: canvas.toDataURL('image/jpeg', 0.85),
                       sourceHint: `Page ${j} of ${file.name}`,
                       selected: true,
                     });

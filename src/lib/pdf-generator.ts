@@ -19,7 +19,7 @@ async function isPageBlank(
     const scale = 0.1; // Check a downscaled version for performance
     canvas.width = image.width * scale;
     canvas.height = image.height * scale;
-    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const ctx = canvas.getContext('2d', { willReadFrequently: true, colorSpace: 'srgb' });
     if (!ctx) return false;
 
     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
@@ -130,7 +130,7 @@ export async function generatePdf(
       const canvas = document.createElement('canvas');
       canvas.width = finalCanvasWidth;
       canvas.height = finalCanvasHeight;
-      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      const ctx = canvas.getContext('2d', { willReadFrequently: true, colorSpace: 'srgb' });
       if (!ctx) throw new Error('Could not get canvas context');
       
       // Ensure pure white background to prevent tinting issues
@@ -155,28 +155,24 @@ export async function generatePdf(
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const data = imageData.data;
         for (let k = 0; k < data.length; k += 4) {
-          let r = data[k];
-          let g = data[k + 1];
-          let b = data[k + 2];
-          const luma = 0.299 * r + 0.587 * g + 0.114 * b;
+            const luma = 0.299 * data[k] + 0.587 * data[k+1] + 0.114 * data[k+2];
+            let finalValue: number;
 
-          // B&W is highest priority
-          if (colorMode.bw) {
-            const finalColor = luma > 128 ? 255 : 0;
-            r = g = b = finalColor;
-          } 
-          // Invert is next, and always works on a grayscale base
-          else if (colorMode.invert) {
-            r = g = b = (255 - luma);
-          }
-          // Grayscale is the fallback
-          else if (colorMode.grayscale) {
-            r = g = b = luma;
-          }
-          
-          data[k] = r;
-          data[k + 1] = g;
-          data[k + 2] = b;
+            if (colorMode.bw) {
+                // B&W (thresholding) has highest priority
+                finalValue = luma > 128 ? 255 : 0;
+            } else if (colorMode.invert) {
+                // Invert is next, and implies a grayscale inversion
+                finalValue = 255 - luma;
+            } else {
+                // Grayscale is the fallback
+                finalValue = luma;
+            }
+            
+            // Apply the single final value to all color channels for a pure grayscale result
+            data[k] = finalValue;
+            data[k + 1] = finalValue;
+            data[k + 2] = finalValue;
         }
         ctx.putImageData(imageData, 0, 0);
       }
