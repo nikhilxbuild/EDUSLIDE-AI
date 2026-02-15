@@ -8,6 +8,9 @@ import { Header } from '@/components/layout/header';
 export const metadata: Metadata = {
   title: 'EduSlide',
   description: 'Optimize your PDFs for studying.',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
