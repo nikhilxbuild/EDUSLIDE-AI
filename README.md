@@ -1,16 +1,6 @@
-EduSlide AI
+# EduSlide AI
 
-<p align="center">
-  <img src="https://eduslide.in/favicon.ico" width="90" alt="EduSlide Logo">
-</p><p align="center">
-  Convert your notes into clean, print-ready PDFs in minutes.
-</p><p align="center">"Next.js" (https://img.shields.io/badge/Next.js-Framework-black?logo=next.js)
-"React" (https://img.shields.io/badge/React-Frontend-blue?logo=react)
-"Tailwind" (https://img.shields.io/badge/TailwindCSS-UI-38B2AC?logo=tailwindcss)
-"Vercel" (https://img.shields.io/badge/Deployment-Vercel-black?logo=vercel)
-"License" (https://img.shields.io/badge/License-MIT-green)
-
-</p>---
+EduSlide AI is a modern web tool designed for students to convert their notes and PDFs into clean, print-ready study sheets. It helps organize study material, optimize layouts, and improve readability for effective learning.
 
 🚀 Live Website
 
