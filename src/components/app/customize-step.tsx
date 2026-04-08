@@ -10,6 +10,7 @@ import {
   Palette,
   Droplets,
   Wand2,
+  Brush,
 } from 'lucide-react';
 
 import type { Page, CustomizationOptions } from '@/lib/types';
@@ -211,6 +212,21 @@ export function CustomizeStep({
                             }
                         />
                         <Label htmlFor="color-bw">B&W</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <Switch
+                            id="color-clean"
+                            checked={customization.colorMode.clearBackground}
+                            onCheckedChange={(checked) =>
+                                setCustomization((prev) => ({
+                                    ...prev,
+                                    colorMode: { ...prev.colorMode, clearBackground: checked },
+                                }))
+                            }
+                        />
+                        <Label htmlFor="color-clean" className="flex items-center gap-1">
+                          Clear Background
+                        </Label>
                     </div>
                 </div>
               </div>
