@@ -9,6 +9,7 @@ export type ColorModeOptions = {
   invert: boolean;
   grayscale: boolean;
   bw: boolean;
+  clearBackground: boolean;
 };
 
 export type CustomizationOptions = {

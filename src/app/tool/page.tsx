@@ -44,6 +44,7 @@ export default function ToolPage() {
       invert: false,
       grayscale: false,
       bw: false,
+      clearBackground: false,
     },
     removeBlankPages: true,
     cropBorders: false,
@@ -187,9 +188,9 @@ export default function ToolPage() {
 
     let newFileName = `${sourceFileName}_enhanced.pdf`;
     if (customization.colorMode.invert) {
-      newFileName = `${sourceFileName}_invert_300dpi.pdf`;
+      newFileName = `${sourceFileName}_invert_enhanced.pdf`;
     } else if (customization.colorMode.bw || customization.colorMode.grayscale) {
-      newFileName = `${sourceFileName}_bw_300dpi.pdf`;
+      newFileName = `${sourceFileName}_bw_enhanced.pdf`;
     }
     setDownloadFileName(newFileName);
 
