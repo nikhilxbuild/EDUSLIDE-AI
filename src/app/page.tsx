@@ -29,10 +29,10 @@ const LandingHero = () => {
           href: '/tool',
         }
       : {
-          heading: 'Optimize Your Notes for Maximum Marks',
+          heading: 'Turn Your Notes into Exam-Focused Smart Notes',
           description:
-            'Upload PDFs and let AI extract only the most important concepts, formulas, and key points for your exams.',
-          buttonLabel: 'Go to AI Optimizer',
+            'Upload your PDFs and let AI extract key concepts, formulas, and high-priority topics tailored for exams like JEE, NEET, and Boards.',
+          buttonLabel: 'Generate Smart Notes →',
           href: '/exam-optimizer',
         };
 
