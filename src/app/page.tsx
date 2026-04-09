@@ -9,6 +9,7 @@ import {
   Repeat,
   Download,
 } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
@@ -16,33 +17,55 @@ import { ToolSelector } from '@/components/app/tool-selector';
 
 // --- Landing Page Components ---
 
-const LandingHero = () => (
-  <section className="w-full pt-12 md:pt-16 pb-20 md:pb-24 text-center">
-    <div className="container mx-auto px-4 md:px-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-4 inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
-          #1 PDF Tool for Students
-        </div>
-        <div className="mt-5">
-          <ToolSelector />
-        </div>
-        <h1 className="mt-5 text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent">
-          Convert Your Notes into Print-Ready PDFs in Minutes
-        </h1>
-        <p className="mt-6 text-lg text-muted-foreground md:text-xl">
-          Upload PDFs, customize layout, and get clean printable notes instantly.
-        </p>
-        <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-          <Button size="lg" asChild>
-            <Link href="/tool">
-              Upload PDF <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
+const LandingHero = () => {
+  const [activeTab, setActiveTab] = useState<'pdf' | 'ai'>('pdf');
+
+  const heroContent =
+    activeTab === 'pdf'
+      ? {
+          heading: 'Convert Your Notes into Print-Ready PDFs in Minutes',
+          description: 'Upload PDFs, customize layout, and get clean printable notes instantly.',
+          buttonLabel: 'Upload PDF',
+          href: '/tool',
+        }
+      : {
+          heading: 'Optimize Your Notes for Maximum Marks',
+          description:
+            'Upload PDFs and let AI extract only the most important concepts, formulas, and key points for your exams.',
+          buttonLabel: 'Go to AI Optimizer',
+          href: '/exam-optimizer',
+        };
+
+  return (
+    <section className="w-full pt-12 md:pt-16 pb-20 md:pb-24 text-center">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-4 inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+            #1 PDF Tool for Students
+          </div>
+          <div className="mt-5">
+            <ToolSelector activeTab={activeTab} onTabChange={setActiveTab} />
+          </div>
+          <div className="mt-5 transition-all duration-300">
+            <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent">
+              {heroContent.heading}
+            </h1>
+            <p className="mt-6 text-lg text-muted-foreground md:text-xl">
+              {heroContent.description}
+            </p>
+          </div>
+          <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+            <Button size="lg" asChild>
+              <Link href={heroContent.href}>
+                {heroContent.buttonLabel} <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const StatsSection = () => {
   const stats = [
