@@ -9,36 +9,70 @@ import {
   Repeat,
   Download,
 } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
+import { ToolSelector } from '@/components/app/tool-selector';
 
 // --- Landing Page Components ---
 
-const LandingHero = () => (
-  <section className="w-full pt-12 md:pt-16 pb-20 md:pb-24 text-center">
-    <div className="container mx-auto px-4 md:px-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-4 inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
-          #1 PDF Tool for Students
-        </div>
-        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent">
-          Convert Your Notes into Print-Ready PDFs in Minutes
-        </h1>
-        <p className="mt-6 text-lg text-muted-foreground md:text-xl">
-          Upload PDFs, customize layout, and get clean printable notes instantly.
-        </p>
-        <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-          <Button size="lg" asChild>
-            <Link href="/tool">
-              Upload PDF <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
+type ToolTab = 'pdf' | 'ai';
+
+const LandingHero = ({
+  activeTab,
+  onTabChange,
+}: {
+  activeTab: ToolTab;
+  onTabChange: (tab: ToolTab) => void;
+}) => {
+
+  const heroContent =
+    activeTab === 'pdf'
+      ? {
+          heading: 'Convert Your Notes into Print-Ready PDFs in Minutes',
+          description: 'Upload PDFs, customize layout, and get clean printable notes instantly.',
+          buttonLabel: 'Upload PDF',
+          href: '/tool',
+        }
+      : {
+          heading: 'Turn Your Notes into Exam-Focused Smart Notes',
+          description:
+            'Upload your PDFs and let AI extract key concepts, formulas, and high-priority topics tailored for exams like JEE, NEET, and Boards.',
+          buttonLabel: 'Generate Smart Notes →',
+          href: '/exam-optimizer',
+        };
+
+  return (
+    <section className="w-full pt-12 md:pt-16 pb-20 md:pb-24 text-center">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-4 inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+            #1 PDF Tool for Students
+          </div>
+          <div className="mt-5">
+            <ToolSelector activeTab={activeTab} onTabChange={onTabChange} />
+          </div>
+          <div className="mt-5 transition-all duration-300">
+            <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent">
+              {heroContent.heading}
+            </h1>
+            <p className="mt-6 text-lg text-muted-foreground md:text-xl">
+              {heroContent.description}
+            </p>
+          </div>
+          <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+            <Button size="lg" asChild>
+              <Link href={heroContent.href}>
+                {heroContent.buttonLabel} <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const StatsSection = () => {
   const stats = [
@@ -67,8 +101,8 @@ const StatsSection = () => {
   );
 };
 
-const FeaturesSection = () => {
-  const features = [
+const FeaturesSection = ({ activeTab }: { activeTab: ToolTab }) => {
+  const pdfFeatures = [
     {
       icon: FileCheck,
       title: 'PDF to Notes Conversion',
@@ -100,6 +134,40 @@ const FeaturesSection = () => {
       description: 'Your optimized PDF is ready to download in seconds.',
     },
   ];
+
+  const aiFeatures = [
+    {
+      icon: Zap,
+      title: 'Smart Concept Extraction',
+      description: 'Extract key concepts, formulas, and important topics automatically.',
+    },
+    {
+      icon: FileCheck,
+      title: 'Exam-Focused Filtering',
+      description: 'Get only high-priority content relevant for JEE, NEET, and Board exams.',
+    },
+    {
+      icon: Repeat,
+      title: 'Last-Night Revision Mode',
+      description: 'Condense your notes into ultra-short revision points for quick study.',
+    },
+    {
+      icon: Palette,
+      title: 'Handwritten Notes Support',
+      description: 'AI understands and processes handwritten notes for clean outputs.',
+    },
+    {
+      icon: Box,
+      title: 'Clean Structured Output',
+      description: 'Get well-organized bullet points instead of messy raw text.',
+    },
+    {
+      icon: Download,
+      title: 'Distraction-Free Notes',
+      description: 'Removes unnecessary explanations and keeps only what matters.',
+    },
+  ];
+  const features = activeTab === 'pdf' ? pdfFeatures : aiFeatures;
   return (
     <section className="w-full py-20 md:py-24">
       <div className="container mx-auto px-4 md:px-6">
@@ -129,11 +197,13 @@ const FeaturesSection = () => {
 };
 
 export default function Home() {
+  const [activeTab, setActiveTab] = useState<ToolTab>('pdf');
+
   return (
     <>
-      <LandingHero />
+      <LandingHero activeTab={activeTab} onTabChange={setActiveTab} />
       <StatsSection />
-      <FeaturesSection />
+      <FeaturesSection activeTab={activeTab} />
     </>
   );
 }
