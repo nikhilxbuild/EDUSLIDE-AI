@@ -17,8 +17,15 @@ import { ToolSelector } from '@/components/app/tool-selector';
 
 // --- Landing Page Components ---
 
-const LandingHero = () => {
-  const [activeTab, setActiveTab] = useState<'pdf' | 'ai'>('pdf');
+type ToolTab = 'pdf' | 'ai';
+
+const LandingHero = ({
+  activeTab,
+  onTabChange,
+}: {
+  activeTab: ToolTab;
+  onTabChange: (tab: ToolTab) => void;
+}) => {
 
   const heroContent =
     activeTab === 'pdf'
@@ -44,7 +51,7 @@ const LandingHero = () => {
             #1 PDF Tool for Students
           </div>
           <div className="mt-5">
-            <ToolSelector activeTab={activeTab} onTabChange={setActiveTab} />
+            <ToolSelector activeTab={activeTab} onTabChange={onTabChange} />
           </div>
           <div className="mt-5 transition-all duration-300">
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent">
@@ -94,8 +101,8 @@ const StatsSection = () => {
   );
 };
 
-const FeaturesSection = () => {
-  const features = [
+const FeaturesSection = ({ activeTab }: { activeTab: ToolTab }) => {
+  const pdfFeatures = [
     {
       icon: FileCheck,
       title: 'PDF to Notes Conversion',
@@ -127,6 +134,40 @@ const FeaturesSection = () => {
       description: 'Your optimized PDF is ready to download in seconds.',
     },
   ];
+
+  const aiFeatures = [
+    {
+      icon: Zap,
+      title: 'Smart Concept Extraction',
+      description: 'Extract key concepts, formulas, and important topics automatically.',
+    },
+    {
+      icon: FileCheck,
+      title: 'Exam-Focused Filtering',
+      description: 'Get only high-priority content relevant for JEE, NEET, and Board exams.',
+    },
+    {
+      icon: Repeat,
+      title: 'Last-Night Revision Mode',
+      description: 'Condense your notes into ultra-short revision points for quick study.',
+    },
+    {
+      icon: Palette,
+      title: 'Handwritten Notes Support',
+      description: 'AI understands and processes handwritten notes for clean outputs.',
+    },
+    {
+      icon: Box,
+      title: 'Clean Structured Output',
+      description: 'Get well-organized bullet points instead of messy raw text.',
+    },
+    {
+      icon: Download,
+      title: 'Distraction-Free Notes',
+      description: 'Removes unnecessary explanations and keeps only what matters.',
+    },
+  ];
+  const features = activeTab === 'pdf' ? pdfFeatures : aiFeatures;
   return (
     <section className="w-full py-20 md:py-24">
       <div className="container mx-auto px-4 md:px-6">
@@ -156,11 +197,13 @@ const FeaturesSection = () => {
 };
 
 export default function Home() {
+  const [activeTab, setActiveTab] = useState<ToolTab>('pdf');
+
   return (
     <>
-      <LandingHero />
+      <LandingHero activeTab={activeTab} onTabChange={setActiveTab} />
       <StatsSection />
-      <FeaturesSection />
+      <FeaturesSection activeTab={activeTab} />
     </>
   );
 }
