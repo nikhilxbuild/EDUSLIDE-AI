@@ -1,25 +1,40 @@
+'use client';
+
 import Link from 'next/link';
-import { Badge } from '@/components/ui/badge';
+import { usePathname } from 'next/navigation';
 
 export function ToolSelector() {
-  return (
-    <div className="mx-auto flex w-full max-w-md items-center gap-2.5 px-1 sm:gap-3 sm:px-0">
-      <Link
-        href="/tool"
-        className="min-w-0 flex-1 whitespace-nowrap rounded-full bg-primary px-3 py-2.5 text-center text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 sm:px-4"
-      >
-        PDF Tool
-      </Link>
+  const pathname = usePathname();
+  const isAiActive = pathname === '/exam-optimizer';
 
-      <Link
-        href="/exam-optimizer"
-        className="min-w-0 flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-gradient-to-r from-primary/95 via-violet-500/90 to-fuchsia-500/85 px-3 py-2.5 text-sm font-semibold text-primary-foreground shadow-[0_6px_18px_hsl(var(--primary)/0.24)] transition-all hover:shadow-[0_8px_20px_hsl(var(--primary)/0.3)] sm:px-4"
-      >
-        <span>AI Optimizer</span>
-        <Badge className="rounded-full bg-background/15 px-1.5 py-0 text-[9px] font-bold uppercase tracking-wide text-white hover:bg-background/15">
-          AI
-        </Badge>
-      </Link>
+  const tabBaseClass =
+    'min-w-0 flex-1 rounded-full px-3 py-2.5 text-center text-sm font-semibold transition-all duration-200';
+
+  return (
+    <div className="mx-auto w-full max-w-md rounded-full bg-white/5 p-1 backdrop-blur-sm">
+      <div className="flex items-center">
+        <Link
+          href="/tool"
+          className={`${tabBaseClass} ${
+            !isAiActive
+              ? 'bg-gradient-to-r from-primary to-violet-500 text-primary-foreground shadow-[0_6px_16px_hsl(var(--primary)/0.28)]'
+              : 'bg-transparent text-white/70 hover:text-white/90'
+          }`}
+        >
+          PDF Tool
+        </Link>
+
+        <Link
+          href="/exam-optimizer"
+          className={`${tabBaseClass} ${
+            isAiActive
+              ? 'bg-gradient-to-r from-primary to-violet-500 text-primary-foreground shadow-[0_6px_16px_hsl(var(--primary)/0.28)]'
+              : 'bg-transparent text-white/70 hover:text-white/90'
+          }`}
+        >
+          AI Optimizer
+        </Link>
+      </div>
     </div>
   );
 }
