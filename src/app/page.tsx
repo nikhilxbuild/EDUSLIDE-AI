@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
+import { ToolSelector } from '@/components/app/tool-selector';
 
 // --- Landing Page Components ---
 
@@ -22,7 +23,10 @@ const LandingHero = () => (
         <div className="mb-4 inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
           #1 PDF Tool for Students
         </div>
-        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent">
+        <div className="mt-5">
+          <ToolSelector />
+        </div>
+        <h1 className="mt-5 text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent">
           Convert Your Notes into Print-Ready PDFs in Minutes
         </h1>
         <p className="mt-6 text-lg text-muted-foreground md:text-xl">
